@@ -1,0 +1,17 @@
+{
+  "author": "Jose F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)",
+  "name": "es.jose",
+  "description": "My blog at es.joseoncode.com",
+  "version": "0.0.0",
+  "homepage": "http://es.joseoncode.com",
+  "dependencies": {
+    "discount": "~0.2.3",
+    "jade": "~0.26.3",
+    "moment": "~1.6.2"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

@@ -1,0 +1,19 @@
+doctype 5
+html(lang="es")
+  head
+    title= title
+  body
+    article
+      header
+        h1= title
+        div.byline
+          address.author by 
+            a(rel='author', href='http://joseoncode.com')= author 
+          | on 
+          - var pubdate = date.toMoment()
+          - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
+          - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
+          time(datetime=datetimeFormat, pubdate)!= humanFormat
+
+      div.content
+        | !{content}
