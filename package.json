@@ -1,19 +1,23 @@
 {
-  "author": "Jose F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)",
-  "name": "es.jose",
-  "description": "My blog at es.joseoncode.com",
-  "version": "0.0.0",
-  "homepage": "http://es.joseoncode.com",
+  "author": "Gustavo Machado <machadogj@gmail.com> (http://machadogj.com)",
+  "name": "machadogj",
+  "description": "My blog at machadogj.com",
+  "version": "0.0.0-1",
+  "homepage": "http://machadogj.com",
   "dependencies": {
     "node-markdown": "~0.1.1",
     "jade": "~0.26.3",
     "moment": "~1.6.2",
-    "colors":"*",
-    "connect":"*"
+    "colors": "*",
+    "connect": "*"
   },
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": "0.6.x"
+  },
+  "subdomain": "machadogj",
+  "scripts": {
+    "start": "app.js"
   }
 }
