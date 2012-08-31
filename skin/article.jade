@@ -1,19 +1,30 @@
-doctype 5
-html(lang="es")
-  head
-    title= title
-  body
-    article
+extends layout
+
+block body
+  div(class="row")
+    article(class="span8")
       header
         h1= title
-        div.byline
-          address.author by 
-            a(rel='author', href='http://joseoncode.com')= author 
-          | on 
-          - var pubdate = date.toMoment()
-          - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
-          - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
-          time(datetime=datetimeFormat, pubdate)!= humanFormat
+        div
+          address.author by
+            - if (typeof author.url === 'string')
+              a(rel='author', href='#{author.url}') #{author.name}
+            - else
+              span  #{author.name}
+            - var pubdate = date.toMoment()
+            - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
+            - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
+            br
+            | on 
+            time(datetime=datetimeFormat, pubdate)!= humanFormat
 
       div.content
         | !{content}
+
+    div(class="span4")
+      div(class="well sidebar-nav")
+        ul(class="nav nav-list")
+          li(class="nav-header") Latest Posts
+          each item in latest
+            li
+              a(href="/#{item.url}")= item.title

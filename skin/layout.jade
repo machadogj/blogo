@@ -1,0 +1,36 @@
+doctype 5
+html(lang="es")
+  head
+    title= title
+    link(href="/css/bootstrap.css", rel="stylesheet")
+    link(href="/css/site.css", rel="stylesheet")
+    block head
+  body
+    div(class="navbar navbar-fixed-top")
+      div(class="navbar-inner")
+        div(class="container")
+            a(class="btn btn-navbar", data-toggle="collapse", data-target=".nav-collapse")
+                span(class="icon-bar")
+                span(class="icon-bar")
+                span(class="icon-bar")
+            a(class="brand", href="/#") machadogj
+            ul(class="nav")
+                li(class="active")
+                    a(href="/#") Home
+                li
+                    a(href="/about#") About
+            ul(class="nav pull-right")
+                li
+                    form(class="navbar-search pull-left", action="/search.html", method="get")
+                      input(name="q", type="text", class="search-query", placeholder="Search")
+
+    div(class="container")
+        block body
+        hr
+        | copyright 2012 
+        a(href="http://machadogj.com") machadogj.com
+        |  by 
+        a(href="http://twitter.com/machadogj") @machadogj
+        br
+        br
+    script(src="/js/bootstrap.js")

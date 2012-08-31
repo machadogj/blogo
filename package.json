@@ -5,9 +5,11 @@
   "version": "0.0.0",
   "homepage": "http://es.joseoncode.com",
   "dependencies": {
-    "discount": "~0.2.3",
+    "node-markdown": "~0.1.1",
     "jade": "~0.26.3",
-    "moment": "~1.6.2"
+    "moment": "~1.6.2",
+    "colors":"*",
+    "connect":"*"
   },
   "devDependencies": {},
   "optionalDependencies": {},
