@@ -1,0 +1,15 @@
+body{
+	padding-top: 60px;
+}
+
+article .content img {
+	display:block;
+	border: 1px solid black;
+	padding: 2px;
+}
+
+/*hide the google search box*/
+.gsc-search-box
+{
+	display: none;
+}
