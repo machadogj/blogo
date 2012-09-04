@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>.NET BulkCopy Precision Issue</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>.NET BulkCopy Precision Issue</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2009-10-29T17:26" pubdate>29.10.2009 17:26</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">I have been having problems with the bulk copy of .NET. More precisely when inserting data through a DataTable with a "Double" typed column using SqlBulkCopy, values seem to loose precision. I have the value 18.4 in a csv file, and ended up with 18.39 in the database. So I simply changed the column DataType of the DataTable from System.Double to System.Decimal and it worked fine!</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

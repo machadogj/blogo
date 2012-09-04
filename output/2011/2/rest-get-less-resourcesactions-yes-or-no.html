@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>REST – GET-less resources(actions): yes or no?</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>REST – GET-less resources(actions): yes or no?</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2011-03-01T19:33" pubdate>01.03.2011 19:33</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">I’ve been reading a lot about hypermedia lately and I must admit that I’m pretty sure that hypermedia is the way to go in REST services. <a href="http://martinfowler.com/articles/richardsonMaturityModel.html">Here</a>’s a pretty cool maturity level explanation by Martin Fowler. In this post you can see how the Level 3 - “Hypermedia Controls” is the way to achieve the glory of REST. Basically, REST is all about resources and state representation. The beauty of REST is how you can literally GET a representation of a resource’s state in your preferred format, and provided with enough hypermedia, you can “navigate” to other resources. So what happens when I need to change the state of a resource? With a few variations on each, I have two options:
+<ul> <li>Make a PUT to the resource with the changed stated on it. The problem with this approach is that you might end up sending a big representation of a resource to change just one field. Even if you only send the “modified” field, you could be potentially using the same url for performing different actions on the same resource (somewhat tunneling).</li> <li>Make a POST to a different resource that represents this change of state. This one is easier to explain with an example. If I want to step the order <a href="http://localhost/orders/5">http://localhost/orders/5</a> from new to pending status, I could POST to the url <a href="http://localhost/pendingorders">http://localhost/pendingorders</a>, thus creating a new resource: <a href="http://localhost/pendingorders/5">http://localhost/pendingorders/5</a> which is nothing but the order with a different status. This second approach, while a bit more elegant RESTfulwise, it could lead to numerous “fictitious” resources, that the only thing they handle is a change of state (potentially firing some process).</li>
+</ul>
+<h1>Once upon a time…</h1>
+When using SOAP/RPC web services, it’s a common practice to have a “service” business layer. This is almost a perfect match as you can usually match the name of the service contract operation with the name on a service/manager method.
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:b4bc2279-0957-47ef-927c-6197f3d3bf8e" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:500px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li>[<span style="color:#2b91af;">ServiceContract</span>]</li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">OrderService</span></li> <li>{</li> <li style="background:#f3f3f3;"> [<span style="color:#2b91af;">OperationContract</span>]</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">GetOrderResponse</span> GetOrder(<span style="color:#2b91af;">GetOrderRequest</span> request)</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">var</span> id = request.OrderId;</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> orderManager = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">OrderManager</span>();</li> <li> <span style="color:#0000ff;">var</span> order = orderManager.GetOrder(id);</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> response = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">GetOrderResponse</span>() { Order = order };</li> <li> <span style="color:#0000ff;">return</span> response;</li> <li style="background:#f3f3f3;"> }</li> <li> </li> <li style="background:#f3f3f3;"> [<span style="color:#2b91af;">OperationContract</span>]</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">StepToPendingResponse</span> StepToPending(<span style="color:#2b91af;">StepToPendingRequest</span> order)</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">var</span> orderEntity = order.ToEntity();</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> orderManager = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">OrderManager</span>();</li> <li> orderManager.StepToPending(orderEntity);</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">StepToPendingResponse</span>();</li> <li> }</li> <li style="background:#f3f3f3;">}</li>
+</ol>
+</div>
+</div>
+</div>
+So your business logic would be in the Manager/Service classes, and your business entities would be pretty much like DTOs. In these type of services, you always POST to the same URL, so there’s no way to “navigate” the service. And this is one of the things that makes REST services so appealing.
+<h1>REST and DTOs…</h1>
+On the other hand, when we are using REST services, you have the feeling of actual navigating resources, and operating on them. Take this url for example <a href="http://localhost/Orders">http://localhost/Orders</a>, you can be pretty certain than it will return a list of orders. And if you had access to <a href="http://localhost/Orders/5">http://localhost/Orders/5</a>, you can infer that it will return the order with an id of 5. What’s even more interesting, is that if this address existed <a href="http://localhost/orders/5/customer/address/city/state/country">http://localhost/orders/5/customer/address/city/state/country</a>, you could be pretty certain that it will return the country where the customer of the order with an id of 5 lives. This sense of navigation is very similar to navigating classes in OOP. Like this: <a href="http://machadogj.com/wp-content/uploads/2011/03/image.png"><img style="display:inline;border-width:0;" title="image" src="http://machadogj.com/wp-content/uploads/2011/03/image_thumb.png" border="0" alt="image" width="638" height="157" /></a> This gives us the hint that we might be able to model our REST service with classes instead of ServiceContracts. Let’s see how this could work. We could define our Order class like so:
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:5f79af46-cb71-4af3-a892-07afa2d20a38" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:300px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">Order</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">int</span> Id { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">List</span>&lt;<span style="color:#2b91af;">OrderItem</span>&gt; Items { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">Customer</span> Customer { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">DateTime</span> SubmittedOn { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">OrderStatus</span> Status { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;">}</li> <li> </li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">enum</span> <span style="color:#2b91af;">OrderStatus</span></li> <li>{</li> <li style="background:#f3f3f3;"> New,</li> <li> InProcess,</li> <li style="background:#f3f3f3;"> Cancelled,</li> <li> Completed</li> <li style="background:#f3f3f3;">}</li>
+</ol>
+</div>
+</div>
+</div>
+When browsing <a href="http://localhost/Store/Orders/5">http://localhost/Store/Orders/5</a> something like this could rendered:
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:b9c5d135-448b-407e-8682-bfcf76275f79" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:300px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Order</span><span style="color:#0000ff;">&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Id</span><span style="color:#0000ff;">&gt;</span>1<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Id</span><span style="color:#0000ff;">&gt;</span></li> <li> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">SubmittedOn</span><span style="color:#0000ff;">&gt;</span>1/1/0001 12:00:00 AM<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">SubmittedOn</span><span style="color:#0000ff;">&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Status</span><span style="color:#0000ff;">&gt;</span>New<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Status</span><span style="color:#0000ff;">&gt;</span></li> <li> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">link</span><span style="color:#0000ff;"> </span><span style="color:#ff0000;">rel</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">OrderItemCollection</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Items</span>"<span style="color:#0000ff;"> /&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">link</span><span style="color:#0000ff;"> </span><span style="color:#ff0000;">rel</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Customer</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Customer</span>"<span style="color:#0000ff;"> /&gt;</span></li> <li><span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Order</span><span style="color:#0000ff;">&gt;</span></li>
+</ol>
+</div>
+</div>
+</div>
+Where the href are relative urls for <a href="http://localhost/Store/orders/1/Items">http://localhost/Store/orders/1/Items</a> and <a href="http://localhost/Store/orders/1/Customer">http://localhost/Store/orders/1/Customer</a> respectively (they could be absolute as well). Now suppose we want to let the user cancel this order. If we want to take the second approach, we would need a new resource that represents this change of state, something like <a href="http://localhost/orders/5/cancellation">http://localhost/orders/5/cancellation</a> which could return 404 status code if the order is not cancelled, and where you can post to if you want to cancel the order. Now how much sense does this make in the OOP world far away from REST and it’s resources? Does it make sense to have a property on the Order for exposing this cancellation logic? How would that look?
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:e0ed6b21-5eee-4211-8961-7c79e146cb98" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:300px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">Order</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">int</span> Id { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">List</span>&lt;<span style="color:#2b91af;">OrderItem</span>&gt; Items { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">Customer</span> Customer { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">DateTime</span> SubmittedOn { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">OrderStatus</span> Status { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">Cancellation</span> Cancellation { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li>}</li> <li style="background:#f3f3f3;"> </li> <li><span style="color:#808080;">///</span><span style="color:#008000;"> </span><span style="color:#808080;">&lt;summary&gt;</span></li> <li style="background:#f3f3f3;"><span style="color:#808080;">///</span><span style="color:#008000;"> What now???</span></li> <li><span style="color:#808080;">///</span><span style="color:#008000;"> </span><span style="color:#808080;">&lt;/summary&gt;</span></li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">Cancellation</span></li> <li>{</li> <li style="background:#f3f3f3;">}</li>
+</ol>
+</div>
+</div>
+</div>
+<h1>REST and DDD (Domain Driven Design)</h1>
+So it occurs to me, that we have a perfect fit for this cancellation logic in OOP world. This would be to have a “Cancel” method in the order class, and no longer have simple DTOs, but rather have business rules like in Domain Driven Design. Unfortunately we have a mismatch between REST and DDD, because even if we use POST for executing the method on the resource, how could we represent a method as a resource when doing a GET? We would have to expose in our service GET-less resources. Let’s see how this could look:
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:03990192-44fc-4bfc-be25-70f55e12484b" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:300px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">Order</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">int</span> Id { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">List</span>&lt;<span style="color:#2b91af;">OrderItem</span>&gt; Items { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">Customer</span> Customer { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">DateTime</span> SubmittedOn { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">OrderStatus</span> Status { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> Cancel()</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">this</span>.Status = <span style="color:#2b91af;">OrderStatus</span>.Cancelled;</li> <li style="background:#f3f3f3;"> }</li> <li>}</li>
+</ol>
+</div>
+</div>
+</div>
+Getting an order (<a href="http://localhost/orders/5">http://localhost/orders/5</a>) could be like this:
+<div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:b393ecc5-91ba-4996-9049-3055fc940fe4" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
+<div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
+<div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
+<div style="background:#ddd;max-height:300px;overflow:auto;">
+<ol style="background:#ffffff;margin:0 0 0 2em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Order</span><span style="color:#0000ff;">&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Id</span><span style="color:#0000ff;">&gt;</span>1<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Id</span><span style="color:#0000ff;">&gt;</span></li> <li> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">SubmittedOn</span><span style="color:#0000ff;">&gt;</span>1/1/0001 12:00:00 AM<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">SubmittedOn</span><span style="color:#0000ff;">&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">Status</span><span style="color:#0000ff;">&gt;</span>New<span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Status</span><span style="color:#0000ff;">&gt;</span></li> <li> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">link</span><span style="color:#0000ff;"> </span><span style="color:#ff0000;">rel</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">OrderItemCollection</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Items</span>"<span style="color:#0000ff;"> /&gt;</span></li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">link</span><span style="color:#0000ff;"> </span><span style="color:#ff0000;">rel</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Customer</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Customer</span>"<span style="color:#0000ff;"> /&gt;</span></li> <li> <span style="color:#0000ff;">&lt;</span><span style="color:#a31515;">link</span><span style="color:#0000ff;"> </span><span style="color:#ff0000;">rel</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Order.Cancel</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">href</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">Cancel</span>"<span style="color:#0000ff;"> </span><span style="color:#ff0000;">method</span><span style="color:#0000ff;">=</span>"<span style="color:#0000ff;">POST</span>"<span style="color:#0000ff;"> /&gt;</span></li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">&lt;/</span><span style="color:#a31515;">Order</span><span style="color:#0000ff;">&gt;</span></li>
+</ol>
+</div>
+</div>
+</div>
+So notice how the link to the Cancel has a rel of type “Order.Cancel”, so that means that the type of resource is the Cancel of an order, and last but not least, checkout the “method” attribute that implies that you should POST to that url if you want to navigate to it. A GET on that Cancel method will make no different, and will show nothing interesting, and probably even throw a 405 (method not allowed) error code. So how bad is it to break this law in the REST world for the sake of readability and bringing the REST services closer to a Domain Driven world? Why not adopt the sense of GET-less resources (actions on resources like I call them) to make our (and our REST clients) lives easier? After all, can you not POST in a web with a FORM that points to a URL that has no GET handler?
+<blockquote>So here’s the my question, GET-less Resources (actions): yes or no? Thoughts?</blockquote>
+NOTE: “rel”, “href” and “method” attributes and their contents are just for illustration purpose, I’m not stating they SHOULD look like that.</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

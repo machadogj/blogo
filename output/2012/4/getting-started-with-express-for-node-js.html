@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Getting started with Express for node.js</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>Getting started with Express for node.js</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2012-05-24T14:25" pubdate>24.05.2012 14:25</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">Express is an MVC framework built on top of connect that obviously runs on node.js. Express simplifies making websites by adding a series of middleware that will handle the parsing of the requests, the routing, and finally the rendering of the views. I’ll show you how to do your first express.js app which will be extremely easy and simple to do. First, create a folder for the app, and install the Express module with <a href="http://npmjs.org/" target="_blank">npm</a> like this: c:\node\testapp&gt;npm intall express <a href="http://machadogj.com/wp-content/uploads/2012/05/installexpress.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="installexpress" src="http://machadogj.com/wp-content/uploads/2012/05/installexpress_thumb.png" alt="installexpress" width="393" height="228" border="0" /></a> This will install the express module, and will leave a command line tool that will let us create a simple express app. For executing this command line type the following: c:\node\testapp&gt;.\node_modules\.bin\express <a href="http://machadogj.com/wp-content/uploads/2012/05/expresscmd.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="expresscmd" src="http://machadogj.com/wp-content/uploads/2012/05/expresscmd_thumb.png" alt="expresscmd" width="395" height="248" border="0" /></a> As we can see, express created three folders for us: Public: these are static files such as .html, .js, .css and images that are considered public and will returned directly if those are requested. Routes: here is where our controllers will reside. In this folder we will put the scripts that know how to handle requests, and which views to render or which response to send back. Views: obviously the views are going to be in this folder. Express can handle quite a lot of templating engines which you can choose from. By default Express uses jade (.jade files) which is a very clean and simple syntax. The other thing that the express command is letting us know, is that we have to run npm tool to update the dependencies. So if we open the package.json we can see that our application right now depends on both Express and Jade: { "name": "application-name" , "version": "0.0.1" , "private": true , "dependencies": { "express": "2.5.8" , "jade": "&gt;= 0.0.1" } } So let’s run npm to install the necessary dependencies for our app: c:\node\testapp&gt;npm install <a href="http://machadogj.com/wp-content/uploads/2012/05/npminstall.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="npminstall" src="http://machadogj.com/wp-content/uploads/2012/05/npminstall_thumb.png" alt="npminstall" width="311" height="228" border="0" /></a> Let’s run the app so see it in action, and we’ll go through each piece later. Use the following to run the website: c:\node\testapp&gt;node app.js <a href="http://machadogj.com/wp-content/uploads/2012/05/nodeapp.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="nodeapp" src="http://machadogj.com/wp-content/uploads/2012/05/nodeapp_thumb.png" alt="nodeapp" width="365" height="39" border="0" /></a> Now go to <a href="http://localhost:3000">http://localhost:3000</a> in your browser and you’ll see a site with a “Welcome to Express” message. Now let’s see how all this is happening. Express is built on top of connect.js which allows you to plug middleware in the pipe to handle requests. When you look at the app.js file, you’ll notice two things, one is that it’s using the app.router middleware: <a href="http://machadogj.com/wp-content/uploads/2012/05/approuter.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="approuter" src="http://machadogj.com/wp-content/uploads/2012/05/approuter_thumb.png" alt="approuter" width="362" height="152" border="0" /></a> This middleware will allow you to define routes, and specify the functions that will handle that request. The other thing you’ll notice is that after the app is configured, there’s a Routes comment with the following: <a href="http://machadogj.com/wp-content/uploads/2012/05/routes.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="routes" src="http://machadogj.com/wp-content/uploads/2012/05/routes_thumb.png" alt="routes" width="244" height="66" border="0" /></a> Which is saying that it will handle requests to “/” with routes.index. The routes as I pointed out before, are stored in the “routes” folder, so if we look at the routes\index.js file we’ll see how that request is being handled. <a href="http://machadogj.com/wp-content/uploads/2012/05/routeindex.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="routeindex" src="http://machadogj.com/wp-content/uploads/2012/05/routeindex_thumb.png" alt="routeindex" width="244" height="114" border="0" /></a> Express will figure out which templating engine we are using (Jade in this case), will map the name of the view “index” to the right file, and send back the result of applying that view to the model we passed; which in this case is { title: ‘Express’ }. In our case, the index view is stored in views\index.jade which is using views\layout.jade as the layout (or master page for the ones coming from asp .net). Here’s what it looks like: <a href="http://machadogj.com/wp-content/uploads/2012/05/indexjade.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border: 0px;" title="indexjade" src="http://machadogj.com/wp-content/uploads/2012/05/indexjade_thumb.png" alt="indexjade" width="205" height="110" border="0" /></a> Pretty cool, right?? So that’s it for getting started on using Express.</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

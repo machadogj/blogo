@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Unit Testing and Test Driven Development (Lessons Learned)</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>Unit Testing and Test Driven Development (Lessons Learned)</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2012-01-13T19:44" pubdate>13.01.2012 19:44</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">I started a discussions with my colleagues at <a href="http://www.tellago.com" target="_blank">Tellago</a> about Unit Testing and Test Driven Development, and a lot of interesting things came out of that discussion. Here are my thoughts. <h2>Unit Testing</h2> Unit testing is an automated way of testing a piece of the system in isolation (unit). This practice seems to be useful in the following scenarios: <ul> <li>When doing TDD/Test first (more on this later)</li> <li>After a feature is complete for automatic testing of the integration of different components.</li> <li>When documenting how to consume an API.</li> <li>When fixing a bug, to prove that a bug exists, use the test to fix it, and prevent the bug from emerging again.</li> <li>After coding, to avoid manual testing (something along the lines of integration testing).</li> <li>Exploring the behavior of somebody else’s API.</li> </ul> Regardless of the use we give to unit testing, seems like it’s not an optional practice anymore. It’s a must-have skill that every developer should work on mastering. Here are some of the advantages: <ul> <li>You get written specifications of how the software should behave.</li> <li>You get client code of the API under test.</li> <li>You get instant feedback of the impact of refactorings/changes.</li> <li>Saves a lot of time! For every time you run 1 unit test, you are saving probably 1 or more minutes of manual testing.</li> <li>Gives you confidence for committing code.</li> <li>Gives you confidence for touching code written by somebody else.</li> <li>Gives you confidence for more aggressive refactorings.</li> </ul> There is (I believe) a downside of inefficient unit testing, and it’s that when testing the wrong things, you might end up with fragile tests, that make maintenance even harder (and more painful). <h2>TDD/Test First</h2> Some of us try to practice TDD or Test First as much as possible, and we strongly believe that it makes us write better and faster code by getting very early feedback of what we are doing. Here’s how ideally we would practice TDD: <ol> <li>Define test</li> <li>Write test</li> <li>Verify the test fails.</li> <li>Write minimum code to make the test pass (with a minimum share of common sense).</li> <li>Refactor code to make it cleaner/better.</li> </ol> The benefits of doing test first are many, here are a few: <ul> <li>Early feedback of your code’s design. You see how your API will be consumed even before you actually coded it.</li> <li>In order to make your test simple, the code under test should have few (or en better one!) responsibilities. This helps design your classes following the single responsibility principle.</li> <li>Confines your brain to the smallest possible piece of your entire solution. You concentrate on doing a small part at a time, but doing it right! The good ol’ “Divide &amp; Conquer” they taught us in the first Algorithms class.</li> </ul> This doesn’t seem to be that much harder than unit testing after something is coded, it actually sounds easier… <strong>WHY ISN’T EVERYBODY DOING TEST FIRST THEN???</strong> I remember when I first read about TDD, and it felt totally unnatural (it still does sometimes). I had been coding in the entirely opposite way for so long, that it was awkward, slow, and tests weren’t as good. So here’s the catch, unfortunately, <strong>IT TAKES TIME!</strong> Not hours, or days, it may take months to start feeling comfortable with writing tests first. If somebody says that unit testing first makes them slower, to me, that sounds like they haven’t tried it enough, and they are not used to doing it. I have not known a person that has done hardcore TDD for a long time, and then came back to Non-TDD coding because they were not fast enough. PS: Thanks for the guys at <a href="http://www.tellago.com" target="_blank">Tellago</a> for the great discussion!!!</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

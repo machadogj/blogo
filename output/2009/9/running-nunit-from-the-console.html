@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Running NUnit from the console</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>Running NUnit from the console</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2009-10-27T19:33" pubdate>27.10.2009 19:33</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">So I have already posted about the source structure for our projects, how to move the common libraries to an external link with SVN and building our projects with Nant. In this post I will show you how to run unit tests in our environment from the command line. First of all if you are not familiar with Nunit, it is a Unit Testing framework for .NET. It's an excellent framework, it's free and you can download it from <a title="NUnit" href="http://www.nunit.org/index.php" target="_blank">here</a>. One of the good things about NUnit, is that it doesn't require to be installed in order to be used. You can copy the folder and execute it from wherever you want. This makes it ideal for placing NUnit in our <a title="svn externals" href="/2009/10/15/svn-externals/" target="_blank">lib folder as an external link</a>. One thing to have in mind is to include the version of NUnit in the folder name to avoid problems in the future. So your folder structure should look something like this: <img class="size-full wp-image-66" title="nant folder" src="http://machadogj.com/wp-content/uploads/2009/10/nant1.png" alt="nant folder" width="160" height="197" /> As I have pointed in the post about <a title="Structuring your source code" href="/2009/09/05/structuring-your-source-code/" target="_blank">basic structure for our source code</a>, I showed a very common practice when it comes to unit tests projects which is to name the project after the project being tested. So if I have a library project name "MyLibrary" I will usually have a unit test project like "MyLibrary.Tests". Once we build our "Tests" project, we are ready to run the tests from the command line. Making the actual call is very simple, you just execute from the command line the nunit-console application with the path to the tests (the *Tests.dll file) and optionally /xml parameter for specifying a place for the output xml file. In order to make this available to the whole team, we are going to build a simple batch file. We are going to put this file in the trunk folder with the following content: .libnunit 2.4.8nunit-console.exe .srcMyLibrary.TestsbindebugMyLibrary.Tests.dll We can add a "build-result" folder inside our trunk and output the xml file by adding the following parameter /xml=.build-resultMyLibrary.Tests.xml So now the batch file will look like this: .libnunit 2.4.8nunit-console.exe /xml=.build-resultMyLibrary.Tests.xml .srcMyLibrary.TestsbindebugMyLibrary.Tests.dll And finally you can use your favorite xsl in order to visualize the results. There's a very simple xsl file in the NUnit folder called "Summary.xslt" which you can use by editing the xml to add the reference like this:
+&lt;?xml version="1.0" encoding="utf-8" standalone="no"?&gt;
+&lt;!--This file represents the results of running a test suite--&gt;
+&lt;?xml-stylesheet type="text/xsl" href="summary.xslt"?&gt; Adding this file to the build-result folder is a good idea too. So we have successfully run our NUnit tests of our project, and left a batch file available to the whole team to run the tests in their local machine. Simple as it is, this will come in very handy when trying to calculate the Unit Tests Coverage of your tests.</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

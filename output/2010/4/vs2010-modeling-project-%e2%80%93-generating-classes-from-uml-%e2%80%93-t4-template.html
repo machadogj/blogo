@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>VS2010 Modeling Project – Generating classes from UML – t4 template</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>VS2010 Modeling Project – Generating classes from UML – t4 template</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2010-05-24T00:08" pubdate>24.05.2010 00:08</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">Here you will find a very simple t4 template for generating the following things from a VS2010 Modeling project: Classes:
+- Class definition.
+- Methods.
+- Class inheritance.
+- Implemented interfaces.
+- Properties.
+- Associations (with other classes in the form of properties). Interfaces:
+- Interface definition.
+- Properties.
+- Methods. Enumerations:
+- Enum definition.
+- Enum items.
+<h2>The template</h2>
+The only thing you need to do in order to use the template is: add a .tt file, change the path of the modelproj so that it points to your own .modelproj file, and then save it. Then you can see the generated code in the file yourtemplate.cs (in case your template is yourtemplate.tt). Note: I don't have a wordpress plugin for coloring and formatting the code :)
+<code>
+&lt;#@ template debug="true" hostspecific="true" language="C#v3.5" #&gt;
+&lt;#@ output extension=".cs" #&gt;
+&lt;#@ assembly name="Microsoft.VisualStudio.Uml.Interfaces.dll" #&gt;
+&lt;#@ assembly name="Microsoft.VisualStudio.ArchitectureTools.Extensibility.dll" #&gt;
+&lt;#@ assembly name="System.Core.dll" #&gt;
+&lt;#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #&gt;
+&lt;#@ import namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility" #&gt;
+&lt;#@ import namespace="Microsoft.VisualStudio.TextTemplating" #&gt;
+&lt;#@ import namespace="System" #&gt;
+&lt;#@ import namespace="System.Collections.Generic" #&gt;
+&lt;#@ import namespace="System.Linq" #&gt;
+&lt;#
+string projectPath = Host.ResolvePath(@"..ModelingProject1ModelingProject1.modelproj");
+var project = ModelingProject.LoadReadOnly(projectPath);
+//Use the packages where the C# namespace stereotype has been applied.
+//You can remove the where if you want to generate all.
+IEnumerable packages = project.Store.Root.NestedPackages
+.Where(n =&gt; n.AppliedStereotypes.Any(s =&gt; s.Name == "namespace"));
+//Namespaces
+foreach(var package in packages)
+{
+#&gt;
+/*
+Template by Gustavo Machado.
+Project: &lt;#= project.Store.Root.Name #&gt;
+*/
+using System;
+&lt;#= "namespace " + package.Name#&gt;
+{
+&lt;# foreach(var aType in package.OwnedTypes) { var aClass = aType as IClass; if (aClass != null) { //render the class. #&gt;
+public&lt;#= GetClassModifier(aClass) #&gt; class &lt;#= aClass.Name #&gt; &lt;#= GetBaseTypes(aClass) #&gt;
+{
+&lt;# //render properties. foreach(var p in aClass.OwnedAttributes) { var property = p as IProperty; if (property != null) { //render a property. #&gt;
+public &lt;#= p.Type.Name #&gt; &lt;#= p.Name #&gt; { get; set; }
+&lt;# } }//end of properties //Render navigation properties (associations) var associations = aClass.Package.OwnedTypes .Where(t =&gt; t is IRelationship &amp;&amp;
+(((IRelationship)t).SourceElement == aClass ||
+((IRelationship)t).TargetElement == aClass)).Cast();
+foreach(var assoc in associations)
+{
+//Look for the correct end of the association.
+foreach (var end in assoc.NavigableOwnedEnds)
+{
+if (end.Opposite.Type == (IType)aClass)
+{
+#&gt;
+public &lt;#= end.Type.Name #&gt; &lt;#= end.Name #&gt; { get; set; }
+&lt;# } } } //render methods foreach(var op in aClass.OwnedOperations) { if (!op.IsAbstract) {//render the not implemented exception. #&gt;
+public&lt;#= GetMethodModifier(op)#&gt; &lt;#= GetReturnType(op)#&gt; &lt;#= op.Name #&gt;(&lt;#= GetMethodParameters(op)#&gt;)
+{
+throw new NotImplementedException();
+}
+&lt;# } else { #&gt;
+public&lt;#= GetMethodModifier(op)#&gt; &lt;#= GetReturnType(op)#&gt; &lt;#= op.Name #&gt;(&lt;#= GetMethodParameters(op)#&gt;);
+&lt;# } } // end of methods. #&gt;
+}
+&lt;# continue; //we are done with the class. } var anInterface = aType as IInterface; if (anInterface != null) { //render the interface. #&gt;
+public interface &lt;#= anInterface.Name #&gt;
+{
+&lt;# //render the properties. foreach(var prop in anInterface.OwnedAttributes) { #&gt;
+public &lt;#= prop.Type.Name #&gt; &lt;#= prop.Name #&gt; { get; set; }
+&lt;# } //render the methods. foreach(var op in anInterface.OwnedOperations) { #&gt;
+&lt;#= GetReturnType(op)#&gt; &lt;#= op.Name #&gt;(&lt;#= GetMethodParameters(op)#&gt;);
+&lt;# } #&gt;
+}
+&lt;# continue; } //end of interfaces. var anEnumeration = aType as IEnumeration; if (anEnumeration != null) { #&gt;
+public enum &lt;#= anEnumeration.Name #&gt;
+{
+&lt;# foreach(var enumItem in anEnumeration.OwnedLiterals) { #&gt;
+&lt;#= enumItem.Name #&gt;,
+&lt;# } #&gt;
+}
+&lt;# } }#&gt;
+}
+&lt;# } //foreach package #&gt;
+&lt;#+
+public string GetBaseTypes(IClass c)
+{
+string generalizations = string.Empty;
+foreach(var g in c.Generalizations)
+{
+if (g.TargetElement as INamedElement != null)
+{
+if (string.IsNullOrEmpty(generalizations))
+generalizations = ": " + ((INamedElement)g.TargetElement).Name;
+else
+generalizations += ", " + ((INamedElement)g.TargetElement).Name;
+}
+}
+foreach(var i in c.InterfaceRealizations)
+{
+if (i.TargetElement as INamedElement != null)
+{
+if (string.IsNullOrEmpty(generalizations))
+generalizations = ": " + ((INamedElement)i.TargetElement).Name;
+else
+generalizations += ", " + ((INamedElement)i.TargetElement).Name;
+}
+}
+return generalizations;
+}
+public string GetReturnType(IOperation o)
+{
+string returnType = string.Empty;
+if (o.Type == null)
+return "void";
+else
+returnType = o.Type.Name;
+//Check if the method returns a collection.
+var returnParameter = o.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.Return).FirstOrDefault();
+if (returnParameter != null &amp;&amp; returnParameter.UpperValue as ILiteralString != null)
+{
+if (((ILiteralString)returnParameter.UpperValue).Value == "*")
+returnType += "[]";
+}
+return returnType;
+}
+public string GetClassModifier(IClass c)
+{
+if (c.IsAbstract)
+return " abstract";
+else
+return string.Empty;
+}
+public string GetMethodModifier(IOperation o)
+{
+if (o.IsAbstract)
+return " abstract";
+else if (o.IsStatic)
+return " static";
+else
+return "";
+}
+private string GetMethodParameters(IOperation op)
+{
+string parameters = string.Empty;
+foreach (var para in op.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.In))
+{
+string name = string.IsNullOrEmpty(para.Name) ? para.Type.Name.ToLower() : para.Name;
+parameters += string.Format("{0} {1}, ", para.Type.Name, name);
+}
+if (!string.IsNullOrEmpty(parameters))
+return parameters.Substring(0, parameters.Length - 2);
+else
+return string.Empty;
+}
+#&gt;
+</code></div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

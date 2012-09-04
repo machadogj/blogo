@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>NotNull Method Extension</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>NotNull Method Extension</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2010-10-04T18:23" pubdate>04.10.2010 18:23</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">My friend blogged about one his favorite method extensions for applying an action to a collection <a href="http://codelikehell.wordpress.com/2010/09/23/observablecollection-foreach/" target="_blank">here</a>. This got me thinking about my favorite method extensions, and here's one I'd actually like to share. There are classes that are meant to hold a certain state, they may not have logic in it, and they usually have a very simple instantiation logic (or none). These classes are known as DTO (data transfer objects), and a very common DTO is the DataContract on WCF services. It's a good practice to wrap a certain request inside a Message (DTO), and the parameters of the operation in a Request (another DTO). For example, here is how we could call a CancelOrder operation:
+<pre style="color:#000000;background:#ffffff;">var service <span style="color:#808030;">=</span> <span style="color:#800000;font-weight:bold;">new</span> OrdersService<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#800080;">;</span>
+var message <span style="color:#808030;">=</span> <span style="color:#800000;font-weight:bold;">new</span> CancelOrderMessage<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#800080;">;</span>
+var request <span style="color:#808030;">=</span> <span style="color:#800000;font-weight:bold;">new</span> CancelOrderRequest<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#800080;">;</span>
+var orderId <span style="color:#808030;">=</span> <span style="color:#800000;">"</span><span style="color:#0000e6;">123456XX</span><span style="color:#800000;">"</span><span style="color:#800080;">;</span>
+request<span style="color:#808030;">.</span>OrderId <span style="color:#808030;">=</span> orderId<span style="color:#800080;">;</span>
+message<span style="color:#808030;">.</span>Body <span style="color:#808030;">=</span> request<span style="color:#800080;">;</span>
+service<span style="color:#808030;">.</span>CancelOrder<span style="color:#808030;">(</span>message<span style="color:#808030;">)</span><span style="color:#800080;">;</span></pre>
+From the service operation point of view, we are only interested in the OrderId, but still we would have to check for the message not being null, and the request not being null and finally validate if we have a valid order id. With these two simple method extensions: Snippet
+<pre style="color:#000000;background:#ffffff;"><span style="color:#800000;font-weight:bold;"> public</span> <span style="color:#800000;font-weight:bold;">static</span> <span style="color:#800000;font-weight:bold;">class</span> Extensions <span style="color:#800080;">{</span> <span style="color:#800000;font-weight:bold;">public</span> <span style="color:#800000;font-weight:bold;">static</span> <span style="color:#800000;font-weight:bold;">bool</span> IsNotNullOrEmpty<span style="color:#808030;">(</span><span style="color:#800000;font-weight:bold;">this</span> <span style="color:#800000;font-weight:bold;">string</span> from<span style="color:#808030;">)</span> <span style="color:#800080;">{</span> <span style="color:#800000;font-weight:bold;">if</span> <span style="color:#808030;">(</span>from <span style="color:#808030;">=</span><span style="color:#808030;">=</span> <span style="color:#800000;font-weight:bold;">null</span><span style="color:#808030;">)</span> <span style="color:#800000;font-weight:bold;">return</span> <span style="color:#800000;font-weight:bold;">false</span><span style="color:#800080;">;</span> <span style="color:#800000;font-weight:bold;">else</span> <span style="color:#800000;font-weight:bold;">return</span> from<span style="color:#808030;">.</span>Trim<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#808030;">.</span>Length <span style="color:#808030;">&gt;</span> <span style="color:#008c00;">0</span><span style="color:#800080;">;</span> <span style="color:#800080;">}</span> <span style="color:#800000;font-weight:bold;">public</span> <span style="color:#800000;font-weight:bold;">static</span> T NotNull<span style="color:#808030;">&lt;</span>T<span style="color:#808030;">&gt;</span><span style="color:#808030;">(</span><span style="color:#800000;font-weight:bold;">this</span> T from<span style="color:#808030;">)</span> where T <span style="color:#808030;">:</span> <span style="color:#800000;font-weight:bold;">class</span><span style="color:#808030;">,</span> <span style="color:#800000;font-weight:bold;">new</span><span style="color:#808030;">(</span><span style="color:#808030;">)</span> <span style="color:#800080;">{</span> <span style="color:#800000;font-weight:bold;">if</span> <span style="color:#808030;">(</span>from <span style="color:#808030;">=</span><span style="color:#808030;">=</span> <span style="color:#800000;font-weight:bold;">null</span><span style="color:#808030;">)</span> <span style="color:#800000;font-weight:bold;">return</span> <span style="color:#800000;font-weight:bold;">new</span> T<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#800080;">;</span> <span style="color:#800000;font-weight:bold;">else</span> <span style="color:#800000;font-weight:bold;">return</span> from<span style="color:#800080;">;</span> <span style="color:#800080;">}</span> <span style="color:#800080;">}</span></pre>
+We can now check for a valid order id like this:
+Snippet
+<pre style="color:#000000;background:#ffffff;"><span style="color:#800000;font-weight:bold;"> public</span> CancelOrderResponseMessage CancelOrder<span style="color:#808030;">(</span>CancelOrderMessage message<span style="color:#808030;">)</span> <span style="color:#800080;">{</span> <span style="color:#800000;font-weight:bold;">if</span> <span style="color:#808030;">(</span>message<span style="color:#808030;">.</span>NotNull<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#808030;">.</span>Body<span style="color:#808030;">.</span>NotNull<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#808030;">.</span>OrderId<span style="color:#808030;">.</span>IsNotNullOrEmpty<span style="color:#808030;">(</span><span style="color:#808030;">)</span><span style="color:#808030;">)</span> <span style="color:#800080;">{</span> <span style="color:#696969;">//cancel order.</span> <span style="color:#800080;">}</span> <span style="color:#800080;">}</span></pre></div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

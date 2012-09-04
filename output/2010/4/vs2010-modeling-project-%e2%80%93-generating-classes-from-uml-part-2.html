@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>VS2010 Modeling Project – Generating classes from UML - Part 2</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>VS2010 Modeling Project – Generating classes from UML - Part 2</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2010-05-21T19:23" pubdate>21.05.2010 19:23</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">Following with my previous post, here I got more on how to navigate modeling projects through code.
+<h2>Getting method's return type</h2>
+<code>public string GetReturnType(IOperation o)
+{
+string returnType = string.Empty;
+if (o.Type == null)
+return "void";
+else
+returnType = o.Type.Name;
+//Check if the method returns a collection.
+var returnParameter = o.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.Return).FirstOrDefault();
+if (returnParameter != null &amp;&amp; returnParameter.UpperValue as ILiteralString != null)
+{
+//Check if it's a collection.
+if (((ILiteralString)returnParameter.UpperValue).Value == "*")
+returnType += "[]";
+}
+return returnType;
+}
+</code>
+<h2>Method's parameters</h2>
+<code>
+public string RenderMethodParameters(IOperation op)
+{
+string parameters = string.Empty;
+foreach (var param in op.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.In))
+{
+string name = string.IsNullOrEmpty(param.Name) ? param.Type.Name.ToLower() : param.Name;
+parameters += string.Format("{0} {1}, ", param.Type.Name, name);
+}
+if (!string.IsNullOrEmpty(parameters))
+return parameters.Substring(0, parameters.Length - 2);
+else
+return string.Empty;
+}
+</code>
+<h2>Class associations</h2>
+<code>
+var associations = aClass.Package.OwnedTypes
+.Where(t =&gt; t is IRelationship &amp;&amp;
+(((IRelationship)t).SourceElement == aClass ||
+((IRelationship)t).TargetElement == aClass)).Cast();
+foreach (var assoc in associations)
+{
+var prop = assoc.NavigableOwnedEnds.Where(e=&gt; e.Opposite.Type == (IType)aClass).FirstOrDefault();
+if (prop != null)
+//Render the property with prop.Type.Name and prop.Name.
+}
+</code>
+<h2>Enums</h2>
+<code>
+foreach(var aType in package.OwnedTypes)
+{
+var anEnumeration = aType as IEnumeration;
+if (anEnumeration != null)
+{
+var name = anEnumeration.Name;
+foreach(var enumItem in anEnumeration.OwnedLiterals)
+{
+var itemName = enumItem.Name;
+}
+}
+</code></div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

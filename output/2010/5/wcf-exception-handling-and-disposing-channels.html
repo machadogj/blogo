@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>WCF - Exception handling and disposing channels</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>WCF - Exception handling and disposing channels</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2010-06-01T22:36" pubdate>01.06.2010 22:36</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">Looking for a way to avoid duplicating the Exception handling and disposal code of WCF channels, I ran into this <a href="http://old.iserviceoriented.com/blog/post/Indisposable+-+WCF+Gotcha+1.aspx">post</a> which gives an interesting approach. However I needed a way make return values more generic, so here is my little tunning.
+<h2>The code</h2>
+<code> public static class Service&lt;T&gt;
+{
+public static ChannelFactory&lt;T&gt; _channelFactory = new ChannelFactory&lt;T&gt;("");
+public static TResult Use&lt;TResult&gt;(Func&lt;T, TResult&gt; codeBlock)
+{
+var proxy = (IClientChannel)_channelFactory.CreateChannel();
+bool success = false;
+try
+{
+var result = codeBlock((T)proxy);
+proxy.Close();
+success = true;
+return result;
+}
+catch(..)
+{
+//Exception handling here.
+}
+finally
+{
+if (!success)
+{
+proxy.Abort();
+}
+}
+}
+}
+</code>
+<h2>How to use it</h2>
+<code>
+//Expose this to your system through an interface for proper loosely coupling.
+public bool IsUsernameAvailable(string name)
+{
+return Service&lt;IUserManagementService&gt;.Use&lt;bool&gt;(proxy =&gt; proxy.IsUsernameAvailable(name));
+}
+</code> For those of you using <a href="http://blog.davidbarrett.net/archive/2007/11.aspx" target="_blank">disposable Clients</a> (clients that implement IDisposable) you can use a very similar approach, just wrap the code inside the Use method with a using statement.
+<h2>With disposable clients</h2>
+<code>public static class Service&lt;T&gt; where T : IDisposable, new()
+{
+public static ChannelFactory&lt;T&gt; _channelFactory = new ChannelFactory&lt;T&gt;("");
+public static TResult Use&lt;TResult&gt;(Func&lt;T, TResult&gt; codeBlock)
+{
+using (var proxy = new T())</code><code>
+{
+bool success = false;
+try
+{
+var result = codeBlock((T)proxy);
+proxy.Close();
+success = true;
+return result;
+}
+catch(..)
+{
+//Exception handling here.
+}
+}
+}
+}</code></div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>

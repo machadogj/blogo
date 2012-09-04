@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Generics and the &quot;of&quot; relation</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="/#" class="brand">machadogj</a>
+          <ul class="nav">
+            <li class=""><a href="/#">Home</a></li>
+            <li class=""><a href="/about.html">About</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <form action="/search.html" method="get" class="navbar-search pull-left">
+                <input name="q" type="text" placeholder="Search" class="search-query">
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <article class="span8">
+          <header>
+            <h1>Generics and the &quot;of&quot; relation</h1>
+            <div>
+              <address class="author">by<span> machadogj</span><br>on 
+                <time datetime="2009-11-29T21:50" pubdate>29.11.2009 21:50</time>
+              </address>
+            </div>
+          </header>
+          <div class="content">I have been using generics very often recently and found ou how they can help you design a class "of" something. Unlike inheritance (a "is" relationship), object oriented programming can't handle the "of" relation elegantly without the help of generics. Object oriented programming approach It is very easy to model a "is" relationship like in "pizza IS food, and steak IS food". You just inherit Pizza class from Food class, and Steak class from Food class and that's it. Suppose you have the "Name" property in Food class, then Pizza just as Steak would have Name as well thanks to inheritance. A Restaurant class, could contain a Menu property as a collection of Food. A PizzaRestaurant inherited from Restaurant would have a Menu as well again thanks to OOP, however this collection would only have different types of pizzas. So if we want to treat the Menu as a collection of pizzas, we would have to cast each Food item to Pizza item, which is not ideal, since clases using PizzaRestaurant should know this particular behaviour. Generics approach Taking the above example, we could further say that PizzaRestaurant, is not only a Restaurant, but it is a Restaurant <strong>of</strong> Pizzas. When designing our classes we should pay attention to the <strong>of</strong> relationship, because it may be better modeled with Generics. How? Well, know that we know that Restaurants are OF a certain type, we parameterize (it's more like a template actually) the Restaurant class so it can be defined OF what this restaurant will be like this: Define that "pizza is food" abstract class Food
+{ public string Name { get; set; }
+}
+class Pizza : Food
+{
+} Then define a restaurant template OF food: class Restaurant&lt;T&gt; where T : Food
+{
+public List&lt;T&gt; Menu { get; set; }
+} Notice that Food is an abstract class, and that T has not been defined yet, so we can only assume that whatever T is, it will be food. So now let's define a restaurant of Pizzas: class PizzaRestaurant : Restaurant&lt;Pizza&gt;
+{
+} If I now declare a PizzaRestaurant and look at the Menu, I will realize that the Menu is a List of Pizzas: <a href="http://machadogj.com/wp-content/uploads/2009/11/pizzarestaurantmenu.png"><img class="alignnone size-medium wp-image-87" title="PizzaRestaurantMenu" src="http://machadogj.com/wp-content/uploads/2009/11/pizzarestaurantmenu.png?w=300" alt="" width="300" height="94" /></a> So watch out for this relationship type "<strong>of</strong>" whenever you are designing your classes. I have found this very useful and a very easy to learn rule.</div>
+        </article>
+        <div class="span4">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Latest Posts</li>
+              <li><a href="/2012/4/stylus-a-better-css.html">Stylus, a better CSS</a></li>
+              <li><a href="/2012/4/getting-started-with-express-for-node-js.html">Getting started with Express for node.js</a></li>
+              <li><a href="/2012/4/getting-started-with-node-js.html">Getting started with node.js</a></li>
+              <li><a href="/2012/0/unit-testing-and-test-driven-development-lessons-learned.html">Unit Testing and Test Driven Development (Lessons Learned)</a></li>
+              <li><a href="/2011/9/unit-testing-wit-knockout-js-with-tdd.html">Unit Testing with Knockout.js</a></li>
+              <li><a href="/archive.html">See more >></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>copyright 2012 <a href="http://machadogj.com">machadogj.com</a> by <a href="http://twitter.com/machadogj">@machadogj</a><br><br>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+  </body>
+</html>
