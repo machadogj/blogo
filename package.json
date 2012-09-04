@@ -18,6 +18,7 @@
   },
   "subdomain": "machadogj",
   "scripts": {
-    "start": "app.js"
+    "start": "app.js",
+    "postinstall": "node generate.js"
   }
 }
