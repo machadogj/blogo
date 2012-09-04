@@ -1,0 +1,15 @@
+In this post I will illustrate the difference between Aspect Oriented Development, and Aspect Oriented Programming. If you know <a title="PostSharp" href="http://www.postsharp.org/" target="_blank">PostSharp</a>, then you know it's an awesome tool (if you don't, then you should). Logging, Caching and Asynchronous processing are the most common cross-cutting concerns you usually find in most systems; and attacking those concerns with AOP tools like PostSharp is usually an excellent solution. If we use PostSharp for this, then we are taking advantage of a AOP technique, but it doesn't mean we are developing in Aspect Oriented manner. However, what about more domain-specific concerns and designing as if everything in your system is a concern? Of course these concerns are not going to "cut across" the entire system, but let's see how we can think of them as concerns.Assume I have a shopping cart, with many different ways to make the payment. We could say that the Checkout is a concern which is used in every payment type process (thus being a cross-cutting concern). So we could develop a generic Checkout logic, and extend it and use it through mechanisms such as method extensions and PostSharp library. We would inject the specific logic, at the right moment. Something like this: public class Checkout
+{ public void Process()... public bool CheckInventory()... public decimal CalculateShipping()... } When using the credit card type, we could add a Method extension to validate CreditCards: public Class CreditCardCheckoutExtensions
+{
+public static bool VerifyCreditCard(this Checkout aCheckout)...
+} And finally attaching specific methods with PostSharp:
+public class CheckoutProcessAttribute : OnMethodBoundaryAspect
+{
+//This will be executed before the Process method in the Checkout class.
+public override void OnEntry( MethodExecutionEventArgs eventArgs)
+{
+//Logic to validate CreditCard...
+if (!eventArgs.Instance.VerifyCreditCards())
+throw new InvalidCreditCardException();
+}
+} It's just a simple example to illustrate how we can think of domain-specific functionality as aspects (concerns).

@@ -1,0 +1,15 @@
+{
+  "title": ".NET BulkCopy Precision Issue",
+  "date": "Thu, 29 Oct 2009 20:26:03 +0000",
+  "author": {
+    "name": "machadogj"
+  },
+  "tags": [
+    ".net",
+    "bug",
+    "c#",
+    "dal",
+    "source code",
+    "sqlbulkcopy"
+  ]
+}

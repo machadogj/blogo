@@ -15,10 +15,12 @@ html(lang="es")
                 span(class="icon-bar")
             a(class="brand", href="/#") machadogj
             ul(class="nav")
-                li(class="active")
+                - var active = (typeof name === "undefined") ? "active" : ""
+                li(class="#{active}")
                     a(href="/#") Home
-                li
-                    a(href="/about#") About
+                - active = (typeof name !== "undefined" && name === "about") ? "active" : ""
+                li(class="#{active}")
+                    a(href="/about.html") About
             ul(class="nav pull-right")
                 li
                     form(class="navbar-search pull-left", action="/search.html", method="get")

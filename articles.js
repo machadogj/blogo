@@ -64,4 +64,17 @@ module.exporst = function () {
       }),
       file = path.join(__dirname, "output", "index.html");
   fs.writeFileSync(file, html);
+
+  //archive
+  var archiveTemplateContent = fs.readFileSync(path.join(__dirname, "skin", "archive.jade")),
+      archiveTemplate = jade.compile(archiveTemplateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true });
+
+  html = archiveTemplate({
+      latest:latest,
+      articles: articles,
+      title: "Gustavo Machado's blog archive"
+    });
+  file = path.join(__dirname, "output", "archive.html");
+  fs.writeFileSync(file, html);
+
 }();

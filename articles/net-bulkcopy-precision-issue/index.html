@@ -1,0 +1,1 @@
+I have been having problems with the bulk copy of .NET. More precisely when inserting data through a DataTable with a "Double" typed column using SqlBulkCopy, values seem to loose precision. I have the value 18.4 in a csv file, and ended up with 18.39 in the database. So I simply changed the column DataType of the DataTable from System.Double to System.Decimal and it worked fine!

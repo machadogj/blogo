@@ -3,9 +3,9 @@ extends layout
 block body
   div(class="row")
     article(class="span8")
-      each item in latest
-        header
-          h1
+      each item in articles
+        header(class="well")
+          h3
             a(href="/#{item.url}")= item.title
           div
             address.author
@@ -20,19 +20,10 @@ block body
               | on 
               time(datetime=datetimeFormat, pubdate)!= humanFormat
 
-        div.content
-          | !{item.content}
-          hr
-
-        p
-          | See the 
-          a(href="/archive.html") archive
-          |  for more posts
-
     div(class="span4")
       div(class="well sidebar-nav")
         ul(class="nav nav-list")
           li(class="nav-header") Latest Posts
           each item in latest
             li
-              a(href="/#{item.url}")= item.title  
+              a(href="/#{item.url}")= item.title

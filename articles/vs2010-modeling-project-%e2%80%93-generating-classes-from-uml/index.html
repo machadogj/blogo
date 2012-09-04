@@ -1,0 +1,40 @@
+In this post I will show you the C# related stuff, and how to navigate a modeling project through code. The only thing that is clearly missing from the modeling project is the code generation based on diagrams (you can check <a href="http://msdn.microsoft.com/en-us/library/dd409436%28v=VS.100%29.aspx" target="_blank">here</a> for all the types of diagrams). I’ve read somewhere that it is a feature that it’s already planned for the near future. But if you are like me and can’t wait for MS to provide with the solution, then you can keep on reading. The first thing you have to do in order to be able to use C# stereotypes, is to choose the C# Profile for the package like this: <a href="http://machadogj.com/wp-content/uploads/2010/05/1.png"><img class="alignnone size-medium wp-image-119" title="Applying C# profile" src="http://machadogj.com/wp-content/uploads/2010/05/1.png?w=300" alt="" width="300" height="122" /></a> As soon as you choose C# Profile, you will see a new set of stereotypes in the class diagram. <a href="http://machadogj.com/wp-content/uploads/2010/05/2.png"><img class="alignnone size-medium wp-image-120" title="C# Stereotypes" src="http://machadogj.com/wp-content/uploads/2010/05/2.png?w=295" alt="" width="295" height="300" /></a> For a good explanation on UML profiles, and code generation, you can check out <a href="http://www.olegsych.com/2010/01/uml-modeling-and-code-generation-in-visual-studio-2010/">this</a> post. Now let’s go to the code. First, you will need to import the following namespaces.
+<ul> <li>Microsoft.VisualStudio.Uml.Classes</li> <li>Microsoft.VisualStudio.ArchitectureTools.Extensibility</li>
+</ul>
+How to get a modeling project: string projectPath = @"c:YourModelingProjectModelingProject1.modelproj";
+var project = ModelingProject.LoadReadOnly(projectPath);
+<h2>How to get namespaces of a modeling project:</h2>
+//Use the packages where the C# namespace stereotype has been applied.
+//You can remove the “where” if you want to generate all.
+IEnumerable&lt;IPackage&gt; packages = project.Store.Root.NestedPackages
+.Where(n =&gt; n.AppliedStereotypes.Any(s =&gt; s.Name == "namespace"));
+//Namespaces foreach(var package in packages)
+{
+<h2>How go get namespace classes:</h2>
+foreach(var c in package.OwnedTypes)
+{
+var aClass = c as IClass;
+if (aClass != null)
+{
+//render the class.
+<h2>Class Properties:</h2>
+//render properties.
+foreach(var p in aClass.OwnedAttributes)
+{
+var property = p as IProperty;
+if (property != null)
+{
+//render a property.
+<h2>Class Methods:</h2>
+foreach(var op in aClass.OwnedOperations) {
+<h2>Interfaces:</h2>
+foreach(var c in package.OwnedTypes)
+{
+var anInterface = c as IInterface;
+if (anInterface != null)
+{
+//render the interface.
+<h2>Interface Methods:</h2>
+foreach(var op in anInterface.OwnedOperations)
+{
+//render the method. In the next post, I’ll give you the code of a T4 template for generating basic stuff. <strong>One tip regarding t4 templates:</strong> I too recommend t4 editor from tangible to work on .tt files, but the Free edition they offer does not come with intellisense for the namespaces I just listed. I guess the easiest work around is to add the references to another console or library project where you will get full intellisense and compile validations.

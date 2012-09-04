@@ -1,0 +1,63 @@
+Following with my previous post, here I got more on how to navigate modeling projects through code.
+<h2>Getting method's return type</h2>
+<code>public string GetReturnType(IOperation o)
+{
+string returnType = string.Empty;
+if (o.Type == null)
+return "void";
+else
+returnType = o.Type.Name;
+//Check if the method returns a collection.
+var returnParameter = o.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.Return).FirstOrDefault();
+if (returnParameter != null &amp;&amp; returnParameter.UpperValue as ILiteralString != null)
+{
+//Check if it's a collection.
+if (((ILiteralString)returnParameter.UpperValue).Value == "*")
+returnType += "[]";
+}
+return returnType;
+}
+</code>
+<h2>Method's parameters</h2>
+<code>
+public string RenderMethodParameters(IOperation op)
+{
+string parameters = string.Empty;
+foreach (var param in op.OwnedParameters.Where(p =&gt; p.Direction == ParameterDirectionKind.In))
+{
+string name = string.IsNullOrEmpty(param.Name) ? param.Type.Name.ToLower() : param.Name;
+parameters += string.Format("{0} {1}, ", param.Type.Name, name);
+}
+if (!string.IsNullOrEmpty(parameters))
+return parameters.Substring(0, parameters.Length - 2);
+else
+return string.Empty;
+}
+</code>
+<h2>Class associations</h2>
+<code>
+var associations = aClass.Package.OwnedTypes
+.Where(t =&gt; t is IRelationship &amp;&amp;
+(((IRelationship)t).SourceElement == aClass ||
+((IRelationship)t).TargetElement == aClass)).Cast();
+foreach (var assoc in associations)
+{
+var prop = assoc.NavigableOwnedEnds.Where(e=&gt; e.Opposite.Type == (IType)aClass).FirstOrDefault();
+if (prop != null)
+//Render the property with prop.Type.Name and prop.Name.
+}
+</code>
+<h2>Enums</h2>
+<code>
+foreach(var aType in package.OwnedTypes)
+{
+var anEnumeration = aType as IEnumeration;
+if (anEnumeration != null)
+{
+var name = anEnumeration.Name;
+foreach(var enumItem in anEnumeration.OwnedLiterals)
+{
+var itemName = enumItem.Name;
+}
+}
+</code>
