@@ -3,8 +3,8 @@ var connect = require('connect'),
 	path	= require('path');
 
 app = connect()
-	.use(connect["static"](path.join(process.cwd(), 'public')))
-	.use(connect["static"](path.join(process.cwd(), 'output')));
+	.use(connect["static"](path.join(__dirname, 'public')))
+	.use(connect["static"](path.join(__dirname, 'output')));
 var port = process.env.PORT || 5000;
 http.createServer(app).listen(port);
 console.log("started server on http://localhost:" + port);

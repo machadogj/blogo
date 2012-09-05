@@ -1,7 +1,13 @@
-require('./articles');
+
 var fs = require('fs'),
     path = require('path'),
     compile = require('./compile');
+
+var outputFolder = path.join(__dirname, "output");
+
+if (!path.existsSync(outputFolder)) {
+  fs.mkdirSync(outputFolder);
+}
 
 var pages = fs.readdirSync(path.join(__dirname, "pages"))
   .map(function(pageFolder){
@@ -16,3 +22,5 @@ var pages = fs.readdirSync(path.join(__dirname, "pages"))
     fs.writeFileSync(file, content);
   
   });
+
+require('./articles');
