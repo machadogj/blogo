@@ -1,4 +1,4 @@
-module.exporst = function () { 
+module.exports = function () {
   var fs = require("fs"),
     path = require("path"),
     jade = require("jade"),
@@ -23,7 +23,7 @@ module.exporst = function () {
                   article.date = new Date(article.date);
                   article.content = compile(path.join(__dirname, "articles", articleFolder));
                   article.year = article.date.getFullYear(),
-                  article.month = article.date.getMonth(),
+                  article.month = article.date.getMonth() + 1,
                   article.url = article.year + "/" + article.month + "/" + article.name + ".html";
                   return article;
                 });
