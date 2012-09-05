@@ -1,9 +1,9 @@
 In my previous <a href="/2010/07/07/using-razor-from-a-console-application/">post</a> I showed how to run a Razor template (.NET's new view engine) from a console app in order to generate code. In this post I will demostrate how to run another razor template from within a razor template. This is actually quiet simple, and since we already have the "RazorClient.dll" referenced in the RazorFactory code, we can achieve this with the following code (this goes inside a razor template): Snippet
-<pre>@{ var factory = new RazorClient.RazorFactory(); using (var template = factory.Create&lt;RazorClient.FileWriter&gt;(@"C:UsersGusDocumentsVisual Studio 2010ProjectsConsoleApplication1ConsoleApplication1Test2.txt")) { if(factory.Errors.Length &gt; 0) { //do something } else { template.FilePath = @"C:UsersGusDocumentsVisual Studio 2010ProjectsConsoleApplication1ConsoleApplication1Test2.txt.out.txt"; template.Execute(); } }
+<pre><code>@{ var factory = new RazorClient.RazorFactory(); using (var template = factory.Create&lt;RazorClient.FileWriter&gt;(@"C:UsersGusDocumentsVisual Studio 2010ProjectsConsoleApplication1ConsoleApplication1Test2.txt")) { if(factory.Errors.Length &gt; 0) { //do something } else { template.FilePath = @"C:UsersGusDocumentsVisual Studio 2010ProjectsConsoleApplication1ConsoleApplication1Test2.txt.out.txt"; template.Execute(); } }
 }
-</pre>
+</code></pre>
 Notice how we need to include the namespace of the classes like in RazorClient.RazorFactory. This code being so easy led me to the idea of having a main razor file to act as a project and fire the rest of the templates. And I took advantage of the fact that we are firing the rest of the templates from a Razor file to generate a report that showed the status of each template in HTML format. Here is a sample: Snippet
-<pre>&lt;html&gt;
+<pre><code>&lt;html&gt;
 &lt;head&gt; &lt;style type="text/css"&gt; .success { background-color: green; } .failed { color: white; background-color: red; } &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -22,7 +22,7 @@ Project generated on @DateTime.Now
 }
 &lt;/table&gt;
 &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;</code></pre>
 When I ran this main template, the following html was generated (you might want to tune it up a little, html design is not my thing :)):
 <h1>My project name</h1>
 Project generated on 7/16/2010 10:44:33 AM
