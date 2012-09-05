@@ -1,17 +1,14 @@
 {
-  "title": "Getting started with Express for node.js",
-  "date": "Thu, 24 May 2012 17:25:05 +0000",
+  "title": [
+    "Getting started with Express for node.js"
+  ],
+  "date": [
+    "Thu, 24 May 2012 17:25:05 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "express",
-    "javascript",
-    "js",
-    "mvc",
-    "node",
-    "node.js",
-    "source code",
-    "web"
-  ]
+  "tags": []
 }

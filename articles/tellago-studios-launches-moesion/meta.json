@@ -1,17 +1,14 @@
 {
-  "title": "Tellago Studios Launches Moesion!",
-  "date": "Mon, 19 Sep 2011 14:33:12 +0000",
+  "title": [
+    "Tellago Studios Launches Moesion!"
+  ],
+  "date": [
+    "Mon, 19 Sep 2011 14:33:12 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "azure",
-    "html5",
-    "it",
-    "mobility",
-    "moesion",
-    "pubnub",
-    "software development",
-    "tellago studios"
-  ]
+  "tags": []
 }

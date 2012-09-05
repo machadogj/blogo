@@ -1,14 +1,14 @@
 {
-  "title": "Structuring your source code",
-  "date": "Sat, 05 Sep 2009 16:10:08 +0000",
+  "title": [
+    "Structuring your source code"
+  ],
+  "date": [
+    "Sat, 05 Sep 2009 16:10:08 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "cm",
-    "configuration management",
-    "configuration management",
-    "svn",
-    "tfs"
-  ]
+  "tags": []
 }

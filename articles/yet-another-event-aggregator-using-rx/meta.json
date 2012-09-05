@@ -1,12 +1,14 @@
 {
-  "title": "Yet another Event Aggregator (using Rx)",
-  "date": "Fri, 11 Mar 2011 00:18:20 +0000",
+  "title": [
+    "Yet another Event Aggregator (using Rx)"
+  ],
+  "date": [
+    "Fri, 11 Mar 2011 00:18:20 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "reactive extensions",
-    "rx",
-    "source code"
-  ]
+  "tags": []
 }

@@ -1,15 +1,14 @@
 {
-  "title": "WCF HTTP – Cool processor for enabling navigation!",
-  "date": "Thu, 17 Feb 2011 23:26:28 +0000",
+  "title": [
+    "WCF HTTP – Cool processor for enabling navigation!"
+  ],
+  "date": [
+    "Thu, 17 Feb 2011 23:26:28 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "navigation",
-    "processor",
-    "software development",
-    "wcf",
-    "wcf",
-    "wcf http"
-  ]
+  "tags": []
 }

@@ -1,13 +1,14 @@
 {
-  "title": "Razor from a console - calling child templates",
-  "date": "Fri, 16 Jul 2010 14:09:48 +0000",
+  "title": [
+    "Razor from a console - calling child templates"
+  ],
+  "date": [
+    "Fri, 16 Jul 2010 14:09:48 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "code generation",
-    "razor",
-    "razor",
-    "source code"
-  ]
+  "tags": []
 }

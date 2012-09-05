@@ -1,17 +1,14 @@
 {
-  "title": "Aspect Oriented Development in .NET",
-  "date": "Tue, 19 Jan 2010 00:40:09 +0000",
+  "title": [
+    "Aspect Oriented Development in .NET"
+  ],
+  "date": [
+    "Tue, 19 Jan 2010 00:40:09 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    ".net",
-    "aod",
-    "aop",
-    "aspect oriented",
-    "c#",
-    "postsharp",
-    "software development",
-    "source code"
-  ]
+  "tags": []
 }

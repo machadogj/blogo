@@ -1,15 +1,14 @@
 {
-  "title": "SVN Externals",
-  "date": "Thu, 15 Oct 2009 19:33:26 +0000",
+  "title": [
+    "SVN Externals"
+  ],
+  "date": [
+    "Thu, 15 Oct 2009 19:33:26 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "cm",
-    "configuration management",
-    "configuration management",
-    "externals",
-    "svn",
-    "tortoisesvn"
-  ]
+  "tags": []
 }

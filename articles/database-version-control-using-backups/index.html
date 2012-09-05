@@ -5,7 +5,7 @@
 <li>Get the latest backup from the source control.</li>
 <li>Restore the database.</li>
 <li>Apply the changes.</li>
-<li>Update the version of the database in a “Version” table. (this step is optional but recommended)</li>
+<li>Update the version of the database in a “Version”      table. (this step is optional but recommended)</li>
 <li>Perform a backup.</li>
 <li>Commit the new backup overriding the previous file.</li>
 </ol>
@@ -13,12 +13,12 @@
 <p>Note: In case you are using an ORM framework for your data access, then you should include the tasks necessary to update the ORM code in order to commit <strong>everything together</strong>.</p>
 <h2>Advantages</h2>
 <ul>
-<li>Easy. It is pretty straight forward and very easy to use and learn.</li>
-<li>Easy to automate. In most database engines you can perform backups and restores from a command line, making this process even more easy and automated.</li>
+<li>Easy. It is pretty straight forward and very easy to      use and learn.</li>
+<li>Easy to automate. In most database engines you can      perform backups and restores from a command line, making this process even      more easy and automated.</li>
 </ul>
 <h2>Disadvantages</h2>
 <ul>
-<li>Clean ups in every update. Because you have to perform a restore you will lose all the data (testing data probably) every time you want to update your database.</li>
-<li>If somebody updated the database while you were making a change yourself, then you will have to merge the two databases.</li>
-<li>Data migration problems. This is a common problem to most database versioning mechanisms. It can happen in two different situations, first developers merging their databases with the latest version may require migrating data from one table to another in order not to lose what they have locally. Second it will most likely happen upon every Release.</li>
+<li>Clean ups in every update. Because you have to perform      a restore you will lose all the data (testing data probably) every time      you want to update your database.</li>
+<li>If somebody updated the database while you were making      a change yourself, then you will have to merge the two databases.</li>
+<li>Data migration problems. This is a common problem to      most database versioning mechanisms. It can happen in two different      situations, first developers merging their databases with the latest      version may require migrating data from one table to another in order not      to lose what they have locally. Second it will most likely happen upon      every Release.</li>
 </ul>

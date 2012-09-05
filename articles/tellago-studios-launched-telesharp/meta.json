@@ -1,8 +1,14 @@
 {
-  "title": "Tellago Studios launched Telesharp!",
-  "date": "Thu, 30 Jun 2011 14:24:35 +0000",
+  "title": [
+    "Tellago Studios launched Telesharp!"
+  ],
+  "date": [
+    "Thu, 30 Jun 2011 14:24:35 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
   "tags": []
 }

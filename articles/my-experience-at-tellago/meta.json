@@ -1,13 +1,14 @@
 {
-  "title": "My experience at Tellago...",
-  "date": "Mon, 07 Mar 2011 18:05:54 +0000",
+  "title": [
+    "My experience at Tellago..."
+  ],
+  "date": [
+    "Mon, 07 Mar 2011 18:05:54 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "hiring",
-    "software development",
-    "tellago",
-    "tellago studios"
-  ]
+  "tags": []
 }

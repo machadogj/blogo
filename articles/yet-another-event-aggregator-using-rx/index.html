@@ -1,9 +1,16 @@
-I was really interested in this <a href="http://jfromaniello.blogspot.com/2010/04/event-aggregator-with-reactive.html" target="_blank">post</a> from Jose Romaniello about Event aggregators in Rx, which looks like the perfect fit, and Keith Woods has his own version in this other <a href="http://keith-woods.com/Blog/post/Another-version-of-the-EventAggregator.aspx" target="_blank">post</a>. So why am I doing yet another post on Event aggregation using Rx? I want to show my (much) simpler version of it, and how you can find different ways to do the same thing in Rx. Here’s Jose’s definition of an Event aggregator:
+I was really interested in this <a href="http://jfromaniello.blogspot.com/2010/04/event-aggregator-with-reactive.html" target="_blank">post</a> from Jose Romaniello about Event aggregators in Rx, which looks like the perfect fit, and Keith Woods has his own version in this other <a href="http://keith-woods.com/Blog/post/Another-version-of-the-EventAggregator.aspx" target="_blank">post</a>. So  why am I doing yet another post on Event aggregation using Rx? I want to show my (much) simpler version of it, and how you can find different ways to do the same thing in Rx.
+
+Here’s Jose’s definition of an Event aggregator:
 <div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:db05b589-b31c-4bea-85d5-3d9622fc4f93" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">interface</span> <span style="color:#2b91af;">IEventPublisher</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">void</span> Publish&lt;TEvent&gt;(TEvent sampleEvent);</li> <li style="background:#f3f3f3;"> <span style="color:#2b91af;">IObservable</span>&lt;TEvent&gt; GetEvent&lt;TEvent&gt;();</li> <li>}</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">interface</span> <span style="color:#2b91af;">IEventPublisher</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">void</span> Publish&lt;TEvent&gt;(TEvent sampleEvent);</li>
+	<li style="background:#f3f3f3;">    <span style="color:#2b91af;">IObservable</span>&lt;TEvent&gt; GetEvent&lt;TEvent&gt;();</li>
+	<li>}</li>
 </ol>
 </div>
 </div>
@@ -13,27 +20,74 @@ So you can get an IObservable&lt;T&gt; of a certain type of events using the Get
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li> <li style="background:#f3f3f3;">aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; <span style="color:#2b91af;">Console</span>.WriteLine(<span style="color:#a31515;">"Validation event: {0}"</span>, x.Message));</li> <li>aggregator.Publish&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">InsufficientFounds</span> { User = <span style="color:#a31515;">"John Doe"</span>, RequestedAmount = 200 });</li> <li style="background:#f3f3f3;"><span style="color:#2b91af;">Console</span>.ReadKey();</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li>
+	<li style="background:#f3f3f3;">aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; <span style="color:#2b91af;">Console</span>.WriteLine(<span style="color:#a31515;">"Validation event: {0}"</span>, x.Message));</li>
+	<li>aggregator.Publish&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">InsufficientFounds</span> { User = <span style="color:#a31515;">"John Doe"</span>, RequestedAmount = 200 });</li>
+	<li style="background:#f3f3f3;"><span style="color:#2b91af;">Console</span>.ReadKey();</li>
 </ol>
 </div>
 </div>
 </div>
-Notice how you specify “ValidationEvent” in the Publish generic parameter, but you pass an “InsufficientFounds”. I wanted to support inheritance without the need to specify the base class, so I thought I’d share my version of an Event aggregator that handles inheritance, which turned out to be even simpler.
+Notice how you specify “ValidationEvent” in the Publish generic parameter, but you pass an “InsufficientFounds”.
+
+I wanted to support inheritance without the need to specify the base class, so I thought I’d share my version of an Event aggregator that handles inheritance, which turned out to be even simpler.
 <div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:c1c2fe7c-3489-423b-9e1b-d207ec0231ca" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">EventAggregator</span> : <span style="color:#2b91af;">IEventPublisher</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">private</span> <span style="color:#2b91af;">ISubject</span>&lt;<span style="color:#0000ff;">object</span>&gt; _subject = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">Subject</span>&lt;<span style="color:#0000ff;">object</span>&gt;();</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">IObservable</span>&lt;T&gt; GetEvent&lt;T&gt;()</li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> _subject.AsObservable().OfType&lt;T&gt;();</li> <li> }</li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> Publish&lt;TEvent&gt;(TEvent sampleEvent)</li> <li style="background:#f3f3f3;"> {</li> <li> _subject.OnNext(sampleEvent);</li> <li style="background:#f3f3f3;"> }</li> <li>}</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">EventAggregator</span> : <span style="color:#2b91af;">IEventPublisher</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">private</span> <span style="color:#2b91af;">ISubject</span>&lt;<span style="color:#0000ff;">object</span>&gt; _subject = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">Subject</span>&lt;<span style="color:#0000ff;">object</span>&gt;();</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">public</span> <span style="color:#2b91af;">IObservable</span>&lt;T&gt; GetEvent&lt;T&gt;()</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">return</span> _subject.AsObservable().OfType&lt;T&gt;();</li>
+	<li>    }</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> Publish&lt;TEvent&gt;(TEvent sampleEvent)</li>
+	<li style="background:#f3f3f3;">    {</li>
+	<li>        _subject.OnNext(sampleEvent);</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li>}</li>
 </ol>
 </div>
 </div>
 </div>
-Notice the use of the “OfType” operator that filters the events based on the desired type. Let’s test this with three different events:
+Notice the use of the “OfType” operator that filters the events based on the desired type.
+
+Let’s test this with three different events:
 <div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:f3d09879-322f-4a1b-8ec8-aca7b98a860b" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:500px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">ValidationEvent</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">virtual</span> <span style="color:#0000ff;">string</span> Message { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;">}</li> <li> </li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">InsufficientFounds</span> : <span style="color:#2b91af;">ValidationEvent</span></li> <li>{</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">string</span> Message</li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">get</span></li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"User {0} does not have enough money to pay {1}"</span>, User, RequestedAmount);</li> <li> }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">set</span></li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">throw</span> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">NotImplementedException</span>();</li> <li> }</li> <li style="background:#f3f3f3;"> }</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">string</span> User { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">decimal</span> RequestedAmount { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li>}</li> <li style="background:#f3f3f3;"> </li> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">SampleEvent</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">string</span> Message { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li> <li style="background:#f3f3f3;">}</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">ValidationEvent</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">virtual</span> <span style="color:#0000ff;">string</span> Message { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li>
+	<li style="background:#f3f3f3;">}</li>
+	<li> </li>
+	<li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">InsufficientFounds</span> : <span style="color:#2b91af;">ValidationEvent</span></li>
+	<li>{</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">string</span> Message</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">get</span></li>
+	<li>        {</li>
+	<li style="background:#f3f3f3;">            <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"User {0} does not have enough money to pay {1}"</span>, User, RequestedAmount);</li>
+	<li>        }</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">set</span></li>
+	<li>        {</li>
+	<li style="background:#f3f3f3;">            <span style="color:#0000ff;">throw</span> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">NotImplementedException</span>();</li>
+	<li>        }</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li>    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">string</span> User { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">decimal</span> RequestedAmount { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li>
+	<li>}</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">SampleEvent</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">string</span> Message { <span style="color:#0000ff;">get</span>; <span style="color:#0000ff;">set</span>; }</li>
+	<li style="background:#f3f3f3;">}</li>
 </ol>
 </div>
 </div>
@@ -43,7 +97,18 @@ And now we can react to all the events derived from ValidationEvent like this:
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li>[<span style="color:#2b91af;">TestMethod</span>]</li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> GetEvent_WhenUsingType_PublishesDerivedTypes()</li> <li>{</li> <li style="background:#f3f3f3;"> <span style="color:#2b91af;">ValidationEvent</span> published = <span style="color:#0000ff;">null</span>;</li> <li> <span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li> <li style="background:#f3f3f3;"> aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; published = x);</li> <li> </li> <li style="background:#f3f3f3;"> aggregator.Publish(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">InsufficientFounds</span> { User = <span style="color:#a31515;">"John Doe"</span>, RequestedAmount = 200 });</li> <li> </li> <li style="background:#f3f3f3;"> <span style="color:#2b91af;">Assert</span>.IsInstanceOfType(published, <span style="color:#0000ff;">typeof</span>(<span style="color:#2b91af;">InsufficientFounds</span>));</li> <li>}</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li>[<span style="color:#2b91af;">TestMethod</span>]</li>
+	<li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> GetEvent_WhenUsingType_PublishesDerivedTypes()</li>
+	<li>{</li>
+	<li style="background:#f3f3f3;">    <span style="color:#2b91af;">ValidationEvent</span> published = <span style="color:#0000ff;">null</span>;</li>
+	<li>    <span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li>
+	<li style="background:#f3f3f3;">    aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; published = x);</li>
+	<li>    </li>
+	<li style="background:#f3f3f3;">    aggregator.Publish(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">InsufficientFounds</span> { User = <span style="color:#a31515;">"John Doe"</span>, RequestedAmount = 200 });</li>
+	<li> </li>
+	<li style="background:#f3f3f3;">    <span style="color:#2b91af;">Assert</span>.IsInstanceOfType(published, <span style="color:#0000ff;">typeof</span>(<span style="color:#2b91af;">InsufficientFounds</span>));</li>
+	<li>}</li>
 </ol>
 </div>
 </div>
@@ -53,7 +118,19 @@ So even though you are asking for ValidationEvents, the aggregator raises events
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#fff;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;"> <li>[<span style="color:#2b91af;">TestMethod</span>]</li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> GetEvent_WhenUsingType_NoneAssignableTypesAreRaised()</li> <li>{</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">string</span> sampleEvent = <span style="color:#a31515;">"Sample event"</span>;</li> <li> <span style="color:#2b91af;">ValidationEvent</span> published = <span style="color:#0000ff;">null</span>;</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li> <li> aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; published = x);</li> <li style="background:#f3f3f3;"> </li> <li> aggregator.Publish(sampleEvent); <span style="color:#008000;">//non-ValidationEvent</span></li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#2b91af;">Assert</span>.IsNull(published);</li> <li style="background:#f3f3f3;">}</li>
+<ol style="background:#ffffff;margin:0;padding:0 0 0 5px;">
+	<li>[<span style="color:#2b91af;">TestMethod</span>]</li>
+	<li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">void</span> GetEvent_WhenUsingType_NoneAssignableTypesAreRaised()</li>
+	<li>{</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">string</span> sampleEvent = <span style="color:#a31515;">"Sample event"</span>;</li>
+	<li>    <span style="color:#2b91af;">ValidationEvent</span> published = <span style="color:#0000ff;">null</span>;</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">var</span> aggregator = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">EventAggregator</span>();</li>
+	<li>    aggregator.GetEvent&lt;<span style="color:#2b91af;">ValidationEvent</span>&gt;().Subscribe(x =&gt; published = x);</li>
+	<li style="background:#f3f3f3;">    </li>
+	<li>    aggregator.Publish(sampleEvent); <span style="color:#008000;">//non-ValidationEvent</span></li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>    <span style="color:#2b91af;">Assert</span>.IsNull(published);</li>
+	<li style="background:#f3f3f3;">}</li>
 </ol>
 </div>
 </div>

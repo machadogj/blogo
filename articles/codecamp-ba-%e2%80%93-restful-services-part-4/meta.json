@@ -1,14 +1,14 @@
 {
-  "title": "Codecamp BA – RESTful Services part 4",
-  "date": "Fri, 17 Sep 2010 13:58:50 +0000",
+  "title": [
+    "Codecamp BA – RESTful Services part 4"
+  ],
+  "date": [
+    "Fri, 17 Sep 2010 13:58:50 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "asp .net",
-    "mvc",
-    "rest",
-    "source code",
-    "wcf"
-  ]
+  "tags": []
 }

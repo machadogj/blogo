@@ -1,8 +1,14 @@
 {
-  "title": "Connected System MVP award 2011",
-  "date": "Wed, 20 Jul 2011 00:54:13 +0000",
+  "title": [
+    "Connected System MVP award 2011"
+  ],
+  "date": [
+    "Wed, 20 Jul 2011 00:54:13 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
   "tags": []
 }

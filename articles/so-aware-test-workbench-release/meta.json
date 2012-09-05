@@ -1,14 +1,14 @@
 {
-  "title": "SO-Aware Test Workbench Release",
-  "date": "Wed, 09 Mar 2011 18:23:22 +0000",
+  "title": [
+    "SO-Aware Test Workbench Release"
+  ],
+  "date": [
+    "Wed, 09 Mar 2011 18:23:22 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "so-aware",
-    "software development",
-    "tellago studios",
-    "testing",
-    "wcf"
-  ]
+  "tags": []
 }

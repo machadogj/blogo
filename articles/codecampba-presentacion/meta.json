@@ -1,14 +1,14 @@
 {
-  "title": "CodeCampBA Presentacion",
-  "date": "Mon, 06 Sep 2010 12:06:21 +0000",
+  "title": [
+    "CodeCampBA Presentacion"
+  ],
+  "date": [
+    "Mon, 06 Sep 2010 12:06:21 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "codecamp",
-    "dataservices",
-    "rest",
-    "restful services",
-    "software development"
-  ]
+  "tags": []
 }

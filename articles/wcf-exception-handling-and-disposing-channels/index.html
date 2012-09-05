@@ -35,12 +35,14 @@ public bool IsUsernameAvailable(string name)
 {
 return Service&lt;IUserManagementService&gt;.Use&lt;bool&gt;(proxy =&gt; proxy.IsUsernameAvailable(name));
 }
-</code> For those of you using <a href="http://blog.davidbarrett.net/archive/2007/11.aspx" target="_blank">disposable Clients</a> (clients that implement IDisposable) you can use a very similar approach, just wrap the code inside the Use method with a using statement.
+</code>
+
+For those of you using <a href="http://blog.davidbarrett.net/archive/2007/11.aspx" target="_blank">disposable Clients</a> (clients that implement IDisposable) you can use a very similar approach, just wrap the code inside the Use method with a using statement.
 <h2>With disposable clients</h2>
 <code>public static class Service&lt;T&gt; where T : IDisposable, new()
 {
-public static ChannelFactory&lt;T&gt; _channelFactory = new ChannelFactory&lt;T&gt;("");
-public static TResult Use&lt;TResult&gt;(Func&lt;T, TResult&gt; codeBlock)
+public static ChannelFactory&lt;T&gt; _channelFactory = new  ChannelFactory&lt;T&gt;("");
+public static TResult Use&lt;TResult&gt;(Func&lt;T, TResult&gt;  codeBlock)
 {
 using (var proxy = new T())</code><code>
 {

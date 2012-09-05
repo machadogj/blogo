@@ -1,15 +1,14 @@
 {
-  "title": "Unit Testing with Knockout.js",
-  "date": "Mon, 24 Oct 2011 03:04:59 +0000",
+  "title": [
+    "Unit Testing with Knockout.js"
+  ],
+  "date": [
+    "Mon, 24 Oct 2011 03:04:59 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "js",
-    "knockout",
-    "qunit",
-    "software development",
-    "tdd",
-    "unit test"
-  ]
+  "tags": []
 }

@@ -1,14 +1,14 @@
 {
-  "title": "Codecamp BA - RESTful Services part 2",
-  "date": "Fri, 17 Sep 2010 13:52:52 +0000",
+  "title": [
+    "Codecamp BA - RESTful Services part 2"
+  ],
+  "date": [
+    "Fri, 17 Sep 2010 13:52:52 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    ".net",
-    "rest",
-    "wcf",
-    "wcf",
-    "webhttp"
-  ]
+  "tags": []
 }

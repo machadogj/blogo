@@ -1,14 +1,14 @@
 {
-  "title": "SO-Aware - Putting OData to work",
-  "date": "Thu, 07 Oct 2010 19:52:32 +0000",
+  "title": [
+    "SO-Aware - Putting OData to work"
+  ],
+  "date": [
+    "Thu, 07 Oct 2010 19:52:32 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "so-aware",
-    "tellago",
-    "tellago studios",
-    "uncategorized",
-    "wcf"
-  ]
+  "tags": []
 }

@@ -1,11 +1,26 @@
-The Preview 4 of the WCF Web API is now available in codeplex, for downloading the bits you can go <a href="http://wcf.codeplex.com/releases/view/64449" target="_blank">here</a>. A few things I have noticed about this latest release are.
+The Preview 4 of the WCF Web API is now available in codeplex, for downloading the bits you can go <a href="http://wcf.codeplex.com/releases/view/64449" target="_blank">here</a>.
+
+A few things I have noticed about this latest release are.
 <h3>Fluent Configuration API</h3>
 In this release, we no longer need to inherit from HttpHostConfiguration in order to perform trivial configuration tasks. We can use the IHttpHostConfigurationBuilder class to pass to the MapServiceRoute method instead. Here is a snipet of code from the Contact sample project:
 <div id="scid:9ce6104f-a9aa-4a17-a79f-3a39532ebf7c:1c0cc215-c028-4953-84f0-eb9e02fb991b" class="wlWriterEditableSmartContent" style="display:inline;float:none;margin:0;padding:0;">
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#ddd;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">var</span> config = <span style="color:#2b91af;">HttpHostConfiguration</span></li> <li style="background:#f3f3f3;"> .Create()</li> <li> .AddFormatters(</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">ContactPngFormatter</span>(),</li> <li> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">ContactFeedFormatter</span>(<span style="color:#a31515;">"http://localhost:9000/Contact"</span>),</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">VCardFormatter</span>(),</li> <li> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">CalendarFormatter</span>()).</li> <li style="background:#f3f3f3;"> SetResourceFactory(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">MefResourceFactory</span>(container)).</li> <li> AddMessageHandlers(<span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">LoggingChannel</span>), <span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">UriFormatExtensionMessageChannel</span>));</li> <li style="background:#f3f3f3;"> </li> <li>SetMappings();</li> <li style="background:#f3f3f3;"> </li> <li><span style="color:#2b91af;">RouteTable</span>.Routes.MapServiceRoute&lt;<span style="color:#2b91af;">ContactResource</span>&gt;(<span style="color:#a31515;">"Contact"</span>, config);</li>
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">var</span> config = <span style="color:#2b91af;">HttpHostConfiguration</span></li>
+	<li style="background:#f3f3f3;">    .Create()</li>
+	<li>    .AddFormatters(</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">ContactPngFormatter</span>(),</li>
+	<li>        <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">ContactFeedFormatter</span>(<span style="color:#a31515;">"http://localhost:9000/Contact"</span>),</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">VCardFormatter</span>(),</li>
+	<li>        <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">CalendarFormatter</span>()).</li>
+	<li style="background:#f3f3f3;">    SetResourceFactory(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">MefResourceFactory</span>(container)).</li>
+	<li>    AddMessageHandlers(<span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">LoggingChannel</span>), <span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">UriFormatExtensionMessageChannel</span>));</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>SetMappings();</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li><span style="color:#2b91af;">RouteTable</span>.Routes.MapServiceRoute&lt;<span style="color:#2b91af;">ContactResource</span>&gt;(<span style="color:#a31515;">"Contact"</span>, config);</li>
 </ol>
 </div>
 </div>
@@ -17,7 +32,22 @@ Notice the “AddMessageHandlers” method from the fluent interface in the prev
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#ddd;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">LoggingChannel</span> : <span style="color:#2b91af;">DelegatingChannel</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> LoggingChannel(<span style="color:#2b91af;">HttpMessageChannel</span> handler)</li> <li style="background:#f3f3f3;"> :<span style="color:#0000ff;">base</span>(handler)</li> <li> {</li> <li style="background:#f3f3f3;"> </li> <li> }</li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> System.Threading.Tasks.<span style="color:#2b91af;">Task</span>&lt;<span style="color:#2b91af;">HttpResponseMessage</span>&gt; SendAsync(<span style="color:#2b91af;">HttpRequestMessage</span> request, System.Threading.<span style="color:#2b91af;">CancellationToken</span> cancellationToken)</li> <li style="background:#f3f3f3;"> {</li> <li> System.Diagnostics.<span style="color:#2b91af;">Trace</span>.TraceInformation(<span style="color:#a31515;">"Begin Request: {0} {1}"</span>, request.Method, request.RequestUri);</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">base</span>.SendAsync(request, cancellationToken);</li> <li> }</li> <li style="background:#f3f3f3;"> </li> <li>}</li>
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">LoggingChannel</span> : <span style="color:#2b91af;">DelegatingChannel</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">public</span> LoggingChannel(<span style="color:#2b91af;">HttpMessageChannel</span> handler)</li>
+	<li style="background:#f3f3f3;">        :<span style="color:#0000ff;">base</span>(handler)</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        </li>
+	<li>    }</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>    <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> System.Threading.Tasks.<span style="color:#2b91af;">Task</span>&lt;<span style="color:#2b91af;">HttpResponseMessage</span>&gt; SendAsync(<span style="color:#2b91af;">HttpRequestMessage</span> request, System.Threading.<span style="color:#2b91af;">CancellationToken</span> cancellationToken)</li>
+	<li style="background:#f3f3f3;">    {</li>
+	<li>        System.Diagnostics.<span style="color:#2b91af;">Trace</span>.TraceInformation(<span style="color:#a31515;">"Begin Request: {0} {1}"</span>, request.Method, request.RequestUri);</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">base</span>.SendAsync(request, cancellationToken);</li>
+	<li>    }</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>}</li>
 </ol>
 </div>
 </div>
@@ -28,7 +58,12 @@ As of this release, there’s no need for the QueryComposition attribute anymore
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#ddd;max-height:300px;overflow:auto;">
-<ol style="background:#ffffff;margin:0 0 0 2em;padding:0 0 0 5px;"> <li>[<span style="color:#2b91af;">WebGet</span>(UriTemplate = <span style="color:#a31515;">""</span>)]</li> <li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#2b91af;">IQueryable</span>&lt;<span style="color:#2b91af;">Contact</span>&gt; Get()</li> <li>{</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> contacts.AsQueryable();</li> <li>}</li>
+<ol style="background:#ffffff;margin:0 0 0 2em;padding:0 0 0 5px;">
+	<li>[<span style="color:#2b91af;">WebGet</span>(UriTemplate = <span style="color:#a31515;">""</span>)]</li>
+	<li style="background:#f3f3f3;"><span style="color:#0000ff;">public</span> <span style="color:#2b91af;">IQueryable</span>&lt;<span style="color:#2b91af;">Contact</span>&gt; Get()</li>
+	<li>{</li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">return</span> contacts.AsQueryable();</li>
+	<li>}</li>
 </ol>
 </div>
 </div>
@@ -39,8 +74,60 @@ The MediaTypeProcessor has been replaced with MediaTypeFormatter (no longer a Pr
 <div style="border:#000080 1px solid;color:#000;font-family:'Courier New', Courier, Monospace;font-size:10pt;">
 <div style="background:#000080;color:#fff;font-family:Verdana, Tahoma, Arial, sans-serif;font-weight:bold;padding:2px 5px;">Code Snippet</div>
 <div style="background:#ddd;max-height:500px;overflow:auto;">
-<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;"> <li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">CalendarFormatter</span> : <span style="color:#2b91af;">MediaTypeFormatter</span></li> <li style="background:#f3f3f3;">{</li> <li> <span style="color:#0000ff;">public</span> CalendarFormatter()</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">this</span>.SupportedMediaTypes.Add(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">MediaTypeHeaderValue</span>(<span style="color:#a31515;">"text/calendar"</span>));</li> <li style="background:#f3f3f3;"> }</li> <li> </li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">object</span> OnReadFromStream(<span style="color:#2b91af;">Type</span> type, System.IO.<span style="color:#2b91af;">Stream</span> stream, System.Net.Http.Headers.<span style="color:#2b91af;">HttpContentHeaders</span> contentHeaders)</li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">throw</span> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">NotImplementedException</span>();</li> <li> }</li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">void</span> OnWriteToStream(<span style="color:#2b91af;">Type</span> type, <span style="color:#0000ff;">object</span> value, System.IO.<span style="color:#2b91af;">Stream</span> stream, System.Net.Http.Headers.<span style="color:#2b91af;">HttpContentHeaders</span> contentHeaders, System.Net.<span style="color:#2b91af;">TransportContext</span> context)</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">var</span> singleContact = value <span style="color:#0000ff;">as</span> <span style="color:#2b91af;">Contact</span>;</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">if</span> (singleContact != <span style="color:#0000ff;">null</span>)</li> <li> {</li> <li style="background:#f3f3f3;"> WriteEvent(singleContact, stream);</li> <li> }</li> <li style="background:#f3f3f3;"> }</li> <li> </li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">bool</span> OnCanReadType(<span style="color:#2b91af;">Type</span> type)</li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">false</span>;</li> <li> }</li> <li style="background:#f3f3f3;"> </li> <li> <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">bool</span> OnCanWriteType(<span style="color:#2b91af;">Type</span> type)</li> <li style="background:#f3f3f3;"> {</li> <li> <span style="color:#0000ff;">return</span> (type == <span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">Contact</span>));</li> <li style="background:#f3f3f3;"> }</li> <li> </li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">private</span> <span style="color:#0000ff;">void</span> WriteEvent(<span style="color:#2b91af;">Contact</span> contact, <span style="color:#2b91af;">Stream</span> stream)</li> <li> {</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> dateFormat = <span style="color:#a31515;">"yyyyMMddTHHmmssZ"</span>;</li> <li> <span style="color:#0000ff;">var</span> eventDate = <span style="color:#2b91af;">DateTime</span>.Now.ToUniversalTime().AddDays(2).AddHours(4);</li> <li style="background:#f3f3f3;"> <span style="color:#0000ff;">var</span> writer = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">StreamWriter</span>(stream);</li> <li> writer.WriteLine(<span style="color:#a31515;">"BEGIN:VCALENDAR"</span>);</li> <li style="background:#f3f3f3;"> writer.WriteLine(<span style="color:#a31515;">"VERSION:2.0"</span>);</li> <li> writer.WriteLine(<span style="color:#a31515;">"BEGIN:VEVENT"</span>);</li> <li style="background:#f3f3f3;"> writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"UID:{0}"</span>, contact.Email));</li> <li> writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTSTAMP:{0}"</span>, <span style="color:#2b91af;">DateTime</span>.Now.ToUniversalTime().ToString(dateFormat)));</li> <li style="background:#f3f3f3;"> writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTSTART:{0}"</span>, eventDate.ToString(dateFormat)));</li> <li> writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTEND:{0}"</span>, eventDate.AddHours(1).ToString(dateFormat)));</li> <li style="background:#f3f3f3;"> writer.WriteLine(<span style="color:#a31515;">"SUMMARY:Discuss WCF Web API"</span>);</li> <li> writer.WriteLine(<span style="color:#a31515;">"END:VEVENT"</span>);</li> <li style="background:#f3f3f3;"> writer.WriteLine(<span style="color:#a31515;">"END:VCALENDAR"</span>);</li> <li> writer.Flush();</li> <li style="background:#f3f3f3;"> }</li> <li>}</li>
+<ol style="background:#ffffff;margin:0 0 0 2.5em;padding:0 0 0 5px;">
+	<li><span style="color:#0000ff;">public</span> <span style="color:#0000ff;">class</span> <span style="color:#2b91af;">CalendarFormatter</span> : <span style="color:#2b91af;">MediaTypeFormatter</span></li>
+	<li style="background:#f3f3f3;">{</li>
+	<li>    <span style="color:#0000ff;">public</span> CalendarFormatter()</li>
+	<li style="background:#f3f3f3;">    {</li>
+	<li>        <span style="color:#0000ff;">this</span>.SupportedMediaTypes.Add(<span style="color:#0000ff;">new</span> <span style="color:#2b91af;">MediaTypeHeaderValue</span>(<span style="color:#a31515;">"text/calendar"</span>));</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li> </li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">object</span> OnReadFromStream(<span style="color:#2b91af;">Type</span> type, System.IO.<span style="color:#2b91af;">Stream</span> stream, System.Net.Http.Headers.<span style="color:#2b91af;">HttpContentHeaders</span> contentHeaders)</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">throw</span> <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">NotImplementedException</span>();</li>
+	<li>    }</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>    <span style="color:#0000ff;">public</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">void</span> OnWriteToStream(<span style="color:#2b91af;">Type</span> type, <span style="color:#0000ff;">object</span> value, System.IO.<span style="color:#2b91af;">Stream</span> stream, System.Net.Http.Headers.<span style="color:#2b91af;">HttpContentHeaders</span> contentHeaders, System.Net.<span style="color:#2b91af;">TransportContext</span> context)</li>
+	<li style="background:#f3f3f3;">    {</li>
+	<li>        <span style="color:#0000ff;">var</span> singleContact = value <span style="color:#0000ff;">as</span> <span style="color:#2b91af;">Contact</span>;</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">if</span> (singleContact != <span style="color:#0000ff;">null</span>)</li>
+	<li>        {</li>
+	<li style="background:#f3f3f3;">            WriteEvent(singleContact, stream);</li>
+	<li>        }</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li> </li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">bool</span> OnCanReadType(<span style="color:#2b91af;">Type</span> type)</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">return</span> <span style="color:#0000ff;">false</span>;</li>
+	<li>    }</li>
+	<li style="background:#f3f3f3;"> </li>
+	<li>    <span style="color:#0000ff;">protected</span> <span style="color:#0000ff;">override</span> <span style="color:#0000ff;">bool</span> OnCanWriteType(<span style="color:#2b91af;">Type</span> type)</li>
+	<li style="background:#f3f3f3;">    {</li>
+	<li>        <span style="color:#0000ff;">return</span> (type == <span style="color:#0000ff;">typeof</span> (<span style="color:#2b91af;">Contact</span>));</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li> </li>
+	<li style="background:#f3f3f3;">    <span style="color:#0000ff;">private</span> <span style="color:#0000ff;">void</span> WriteEvent(<span style="color:#2b91af;">Contact</span> contact, <span style="color:#2b91af;">Stream</span> stream)</li>
+	<li>    {</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">var</span> dateFormat = <span style="color:#a31515;">"yyyyMMddTHHmmssZ"</span>;</li>
+	<li>        <span style="color:#0000ff;">var</span> eventDate = <span style="color:#2b91af;">DateTime</span>.Now.ToUniversalTime().AddDays(2).AddHours(4);</li>
+	<li style="background:#f3f3f3;">        <span style="color:#0000ff;">var</span> writer = <span style="color:#0000ff;">new</span> <span style="color:#2b91af;">StreamWriter</span>(stream);</li>
+	<li>        writer.WriteLine(<span style="color:#a31515;">"BEGIN:VCALENDAR"</span>);</li>
+	<li style="background:#f3f3f3;">        writer.WriteLine(<span style="color:#a31515;">"VERSION:2.0"</span>);</li>
+	<li>        writer.WriteLine(<span style="color:#a31515;">"BEGIN:VEVENT"</span>);</li>
+	<li style="background:#f3f3f3;">        writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"UID:{0}"</span>, contact.Email));</li>
+	<li>        writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTSTAMP:{0}"</span>, <span style="color:#2b91af;">DateTime</span>.Now.ToUniversalTime().ToString(dateFormat)));</li>
+	<li style="background:#f3f3f3;">        writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTSTART:{0}"</span>, eventDate.ToString(dateFormat)));</li>
+	<li>        writer.WriteLine(<span style="color:#0000ff;">string</span>.Format(<span style="color:#a31515;">"DTEND:{0}"</span>, eventDate.AddHours(1).ToString(dateFormat)));</li>
+	<li style="background:#f3f3f3;">        writer.WriteLine(<span style="color:#a31515;">"SUMMARY:Discuss WCF Web API"</span>);</li>
+	<li>        writer.WriteLine(<span style="color:#a31515;">"END:VEVENT"</span>);</li>
+	<li style="background:#f3f3f3;">        writer.WriteLine(<span style="color:#a31515;">"END:VCALENDAR"</span>);</li>
+	<li>        writer.Flush();</li>
+	<li style="background:#f3f3f3;">    }</li>
+	<li>}</li>
 </ol>
 </div>
 </div>
-</div> All this, a more complete Contacts samples, and much more on this last release, download and enjoy!
+</div>
+ 
+
+All this, a more complete Contacts samples, and much more on this last release, download and enjoy!

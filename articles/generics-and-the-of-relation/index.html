@@ -1,11 +1,39 @@
-I have been using generics very often recently and found ou how they can help you design a class "of" something. Unlike inheritance (a "is" relationship), object oriented programming can't handle the "of" relation elegantly without the help of generics. Object oriented programming approach It is very easy to model a "is" relationship like in "pizza IS food, and steak IS food". You just inherit Pizza class from Food class, and Steak class from Food class and that's it. Suppose you have the "Name" property in Food class, then Pizza just as Steak would have Name as well thanks to inheritance. A Restaurant class, could contain a Menu property as a collection of Food. A PizzaRestaurant inherited from Restaurant would have a Menu as well again thanks to OOP, however this collection would only have different types of pizzas. So if we want to treat the Menu as a collection of pizzas, we would have to cast each Food item to Pizza item, which is not ideal, since clases using PizzaRestaurant should know this particular behaviour. Generics approach Taking the above example, we could further say that PizzaRestaurant, is not only a Restaurant, but it is a Restaurant <strong>of</strong> Pizzas. When designing our classes we should pay attention to the <strong>of</strong> relationship, because it may be better modeled with Generics. How? Well, know that we know that Restaurants are OF a certain type, we parameterize (it's more like a template actually) the Restaurant class so it can be defined OF what this restaurant will be like this: Define that "pizza is food" abstract class Food
-{ public string Name { get; set; }
+I have been using generics very often recently and found ou how they can help you design a class "of" something. Unlike inheritance (a "is" relationship), object oriented programming can't handle the "of" relation elegantly without the help of generics.
+
+Object oriented programming approach
+
+It is very easy to model a "is" relationship like in "pizza IS food, and steak IS food". You just inherit Pizza class from Food class, and Steak class from Food class and that's it. Suppose you have the "Name" property in Food class, then Pizza just as Steak would have Name as well thanks to inheritance. A Restaurant class, could contain a Menu property as a collection of Food. A PizzaRestaurant inherited from Restaurant would have a Menu as well again thanks to OOP, however this collection would only have different types of pizzas. So if we want to treat the Menu as a collection of pizzas, we would have to cast each Food item to Pizza item, which is not ideal, since clases using PizzaRestaurant should know this particular behaviour.
+
+Generics approach
+
+Taking the above example, we could further say that PizzaRestaurant, is not only a Restaurant, but it is a Restaurant <strong>of</strong> Pizzas. When designing our classes we should pay attention to the <strong>of</strong> relationship, because it may be better modeled with Generics. How? Well, know that we know that Restaurants are OF a certain type, we parameterize (it's more like a template actually) the Restaurant class so it can be defined OF what this restaurant will be like this:
+
+Define that "pizza is food"
+
+abstract class Food
+{
+
+public string Name { get; set; }
 }
 class Pizza : Food
 {
-} Then define a restaurant template OF food: class Restaurant&lt;T&gt; where T : Food
+}
+
+Then define a restaurant template OF food:
+
+class Restaurant&lt;T&gt; where T : Food
 {
 public List&lt;T&gt; Menu { get; set; }
-} Notice that Food is an abstract class, and that T has not been defined yet, so we can only assume that whatever T is, it will be food. So now let's define a restaurant of Pizzas: class PizzaRestaurant : Restaurant&lt;Pizza&gt;
+}
+
+Notice that Food is an abstract class, and that T has not been defined yet, so we can only assume that whatever T is, it will be food. So now let's define a restaurant of Pizzas:
+
+class PizzaRestaurant : Restaurant&lt;Pizza&gt;
 {
-} If I now declare a PizzaRestaurant and look at the Menu, I will realize that the Menu is a List of Pizzas: <a href="http://cdn.machadogj.com/uploads/2009/11/pizzarestaurantmenu.png"><img class="alignnone size-medium wp-image-87" title="PizzaRestaurantMenu" src="http://cdn.machadogj.com/uploads/2009/11/pizzarestaurantmenu.png?w=300" alt="" width="300" height="94" /></a> So watch out for this relationship type "<strong>of</strong>" whenever you are designing your classes. I have found this very useful and a very easy to learn rule.
+}
+
+If I now declare a PizzaRestaurant and look at the Menu, I will realize that the Menu is a List of Pizzas:
+
+<a href="http://cdn.machadogj.com/uploads/2009/11/pizzarestaurantmenu.png"><img class="alignnone size-medium wp-image-87" title="PizzaRestaurantMenu" src="http://cdn.machadogj.com/uploads/2009/11/pizzarestaurantmenu.png?w=300" alt="" width="300" height="94" /></a>
+
+So watch out for this relationship type "<strong>of</strong>" whenever you are designing your classes. I have found this very useful and a very easy to learn rule.

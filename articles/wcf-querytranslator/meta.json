@@ -1,12 +1,14 @@
 {
-  "title": "WCF QueryTranslator",
-  "date": "Fri, 07 Jan 2011 15:49:28 +0000",
+  "title": [
+    "WCF QueryTranslator"
+  ],
+  "date": [
+    "Fri, 07 Jan 2011 15:49:28 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "odata",
-    "wcf",
-    "wcf"
-  ]
+  "tags": []
 }

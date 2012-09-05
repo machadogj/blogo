@@ -1,13 +1,14 @@
 {
-  "title": "SO-Aware - Setting up your first service",
-  "date": "Wed, 13 Oct 2010 14:59:27 +0000",
+  "title": [
+    "SO-Aware - Setting up your first service"
+  ],
+  "date": [
+    "Wed, 13 Oct 2010 14:59:27 +0000"
+  ],
   "author": {
-    "name": "machadogj"
+    "name": [
+      "machadogj"
+    ]
   },
-  "tags": [
-    "so-aware",
-    "tellago",
-    "wcf",
-    "wcf"
-  ]
+  "tags": []
 }
