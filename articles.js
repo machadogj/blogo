@@ -1,4 +1,4 @@
-module.exporst = function () { 
+module.exports = function () {
   var fs = require("fs"),
     path = require("path"),
     jade = require("jade"),
