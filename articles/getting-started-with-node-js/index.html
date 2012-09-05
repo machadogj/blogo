@@ -4,16 +4,16 @@ node.js is a development platform based on Javascript created by Ryan Dahl and c
 <a href="http://cdn.machadogj.com/uploads/2012/05/repl.png"><img style="background-image: none; padding-left: 0px; padding-right: 0px; ; padding-top: 0px; border-width: 0px;" title="repl" src="http://cdn.machadogj.com/uploads/2012/05/repl_thumb.png" alt="repl" width="564" height="188" border="0" /></a>
 
 node.js happens to be very good at running web servers, apart from being very simple to do so, the non-blocking philosophy makes it a very good allied of concurrency, since it’s not limited to the amount of threads that your process can run. Here’s how a hello world web server looks like:
-<div class="csharpcode">
-<pre><code><span class="lnum"> 1: </span><span class="kwrd">var</span> http = require(<span class="str">'http'</span>);</code></pre>
-<pre><code><span class="lnum"> 2: </span></code></pre>
-<pre><code><span class="lnum"> 3: </span>http.createServer(<span class="kwrd">function</span> (request, response) {</code></pre>
-<pre><code><span class="lnum"> 4: </span>    response.writeHead(200, { <span class="str">'Content-Type'</span>: <span class="str">'text/plain'</span> });</code></pre>
-<pre><code><span class="lnum"> 5: </span>    response.end(<span class="str">'Hello World\n'</span>);</code></pre>
-<pre><code><span class="lnum"> 6: </span>}).listen(8000);</code></pre>
-<pre><code><span class="lnum"> 7: </span></code></pre>
-<pre><code><span class="lnum"> 8: </span>console.log(<span class="str">'Server running at http://127.0.0.1:8000/'</span>);</code></pre>
-</div>
+
+<pre><code>
+var http = require('http');
+http.createServer(function (request, response) {
+	response.writeHead(200, { 'Content-Type': 'text/plain' });
+	response.end('Hello World\n');
+}).listen(8000);
+console.log('Server running at http://127.0.0.1:8000/');
+</code></pre>
+
 And you could could run this very easily if you save it to a file like this:
 <pre><code>node index.js</code></pre>
 Another very interesting thing about writing web applications in node, is that you keep the client side and server side languages consistent. If you add a json-document based NoSQL database like mongo to the mix, you have yourself a complete javascript/json environment for developing websites.
