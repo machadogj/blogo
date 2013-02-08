@@ -1,5 +1,6 @@
 var fs = require('fs'),
     path = require('path'),
+    exists = fs.existsSync || path.existsSync,
     md = require("node-markdown").Markdown,
     j = require("jade");
 
@@ -28,7 +29,7 @@ module.exports = function ( folder, file ) {
 
   for (var i in compilers) {
     var filePath = path.join(folder, file + '.' + i);
-    if (fs.existsSync(filePath)) {
+    if (exists(filePath)) {
       return compilers[i](filePath);
     }
   }
