@@ -14,14 +14,15 @@ function apply( name, obj, folder, filename ) {
 
   var templateContent = fs.readFileSync(path.join(__dirname, "skin", name + ".jade")),
       template = jade.compile(templateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true }),
-      outputFolder = path.join(__dirname, "output", folder);
+      outputFolder = path.join(__dirname, "output", folder),
+      outputFile = path.join(outputFolder, filename);
 
 
   var content = template(obj);
   mkdirp(outputFolder);
   
-  console.log('saving article to: ' + path.join(outputFolder, filename));
-  fs.writeFileSync(path.join(outputFolder, filename), content);
+  console.log('saving article to: ' + outputFile);
+  fs.writeFileSync(outputFile, content);
 }
 
 //articles
@@ -37,7 +38,9 @@ var articles = fs.readdirSync(path.join(__dirname, "articles"))
                 article.tldr = compile(articleFolder, "tldr");
                 article.year = article.date.getFullYear(),
                 article.month = article.date.getMonth() + 1,
-                article.url = "/" + article.year + "/" + article.month + "/" + article.name + ".html";
+                article.filename = article.name + ".html";
+                article.folder = article.year + "/" + article.month;
+                article.url = "/" + article.folder + "/" + article.filename;
                 return article;
               });
 
@@ -51,7 +54,7 @@ articles.forEach(function(a){
   a.latest = latest;
 
   console.log("generating: " + a.name);
-  apply("article", a, a.year + "/" + a.month, a.name + ".html");
+  apply("article", a, a.folder, a.filename);
 });
 console.log("done generating articles");
 console.log("------------------------");
