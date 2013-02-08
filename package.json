@@ -9,7 +9,8 @@
     "jade": "~0.26.3",
     "moment": "~1.6.2",
     "colors": "*",
-    "connect": "*"
+    "connect": "*",
+    "mkdirp":"*"
   },
   "devDependencies": {},
   "optionalDependencies": {},
