@@ -1,29 +1,18 @@
 extends layout
 
 block body
-  div(class="row")
-    article(class="span8")
-      each item in articles
-        header(class="well")
-          h3
-            a(href="/#{item.url}")= item.title
-          div
-            address.author
-              - if (typeof item.author.url === 'string')
-                a(rel='author', href='#{item.author.url}') #{item.author.name}
-              - else
-                span  #{item.author.name}
-              - var pubdate = item.date.toMoment()
-              - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
-              - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
-              br
-              | on 
-              time(datetime=datetimeFormat, pubdate)!= humanFormat
+  .content.blog
+    .container
+      .row.tasks
+        .offset2.span8
+          each item in articles
+            .task
+              h6
+                a(href="#{item.url}")= item.title
 
-    div(class="span4")
-      div(class="well sidebar-nav")
-        ul(class="nav nav-list")
-          li(class="nav-header") Latest Posts
-          each item in latest
-            li
-              a(href="/#{item.url}")= item.title
+              .tmeta
+                - var pubdate = item.date.toMoment()
+                - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
+                - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
+                i.icon-calendar
+                | #{humanFormat}

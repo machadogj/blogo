@@ -1,1 +1,1 @@
-a very early attempt to write my own static blog engine in node.js
+My personal blog at http://machadogj.com

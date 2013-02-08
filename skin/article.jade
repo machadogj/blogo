@@ -1,51 +1,62 @@
 extends layout
 
 block body
-  div(class="row")
-    article(class="span8")
-      header
-        h1= title
-        div
-          address.author by
-            - if (typeof author.url === 'string')
-              a(rel='author', href='#{author.url}') #{author.name}
-            - else
-              span  #{author.name}
-            - var pubdate = date.toMoment()
-            - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
-            - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
-            br
-            | on 
-            time(datetime=datetimeFormat, pubdate)!= humanFormat
+  .content.blog
+    .container
+      .row
+        .offset2.span8
+          .posts
+            //
+               Each posts should be enclosed inside "entry" class" 
+            //
+               Post one 
+            .entry
+              h2
+                a(href='#')= title
+              //
+                 Meta details 
+              .meta
+                - var pubdate = date.toMoment()
+                - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
+                - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
+                i.icon-calendar
+                | #{humanFormat}
+                
+                span.pull-right
+                  i.icon-comment
+                  a(href='#{url}#disqus_thread') Comments
 
-      div.content
-        | !{content}
+              //
+                 Para 
+              div !{content}
+              hr
+              div(id="disqus_thread")
+  script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'machadogj'; // required: replace example with your forum shortname
 
-      div(id="disqus_thread")
-      script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'machadogj'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  noscript
+    | Please enable JavaScript to view the 
+    a(href="http://disqus.com/?ref_noscript") comments powered by Disqus.
+  a(href="http://disqus.com",class="dsq-brlink")
+    | comments powered by 
+    span(class="logo-disqus") Disqus
+              
+  script
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'machadogj'; // required: replace example with your forum shortname
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      noscript
-        | Please enable JavaScript to view the 
-        a(href="http://disqus.com/?ref_noscript") comments powered by Disqus.
-      a(href="http://disqus.com",class="dsq-brlink")
-        | comments powered by 
-        span(class="logo-disqus") Disqus
-        
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
 
-    div(class="span4")
-      div(class="well sidebar-nav")
-        ul(class="nav nav-list")
-          li(class="nav-header") Latest Posts
-          each item in latest
-            li
-              a(href="/#{item.url}")= item.title
-          li
-            a(href="/archive.html") See more >>

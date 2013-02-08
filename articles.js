@@ -1,80 +1,70 @@
-module.exports = function () {
-  var fs = require("fs"),
-    path = require("path"),
-    jade = require("jade"),
-    moment = require("moment"),
-    compile = require("./compile");
-
-  var articleTemplateContent = fs.readFileSync(path.join(__dirname, "skin", "article.jade")),
-      articleTemplate = jade.compile(articleTemplateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true });
-
-  Date.prototype.toMoment = function(format){
-    return moment(this);
-  };
-
-  //articles
-  var articles = fs.readdirSync(path.join(__dirname, "articles"))
-                .map(function(articleFolder){
-                  var metaFile    = path.join(__dirname, "articles", articleFolder, "meta.json"),
-                      //contentFile = path.join(__dirname, "articles", articleFolder, "index.markdown"),
-                      article     = require(metaFile);
-
-                  article.name = articleFolder;
-                  article.date = new Date(article.date);
-                  article.content = compile(path.join(__dirname, "articles", articleFolder));
-                  article.year = article.date.getFullYear(),
-                  article.month = article.date.getMonth() + 1,
-                  article.url = article.year + "/" + article.month + "/" + article.name + ".html";
-                  return article;
-                });
-
-  //get the last 5 posts
-  var latest = articles.sort(function(a,b){return b.date - a.date;}).slice(0,5);
-
-  articles.forEach(function(a){
-    a.latest = latest;
-    
-    //archive
-    var year = a.year,
-        month = a.month,
-        url = a.url,
-        outputPath = path.join(__dirname, "output", year.toString());
-    
-    if (! path.existsSync(outputPath)) {
-      fs.mkdirSync(outputPath);
-    }
-    outputPath = path.join(outputPath, month.toString());
-    if (! path.existsSync(outputPath)) {
-      fs.mkdirSync(outputPath);
-    }
-
-    var html = articleTemplate(a),
-        file = path.join(outputPath, a.name + ".html");
-    fs.writeFileSync(file, html);
-  });
+var fs = require("fs"),
+  path = require("path"),
+  jade = require("jade"),
+  moment = require("moment"),
+  compile = require("./compile"),
+  mkdirp = require('mkdirp').sync;
 
 
-  //index
-  var indexTemplateContent = fs.readFileSync(path.join(__dirname, "skin", "index.jade")),
-      indexTemplate = jade.compile(indexTemplateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true });
+Date.prototype.toMoment = function(format){
+  return moment(this);
+};
 
-  var html = indexTemplate({
-        latest:latest,
-        title: "Gustavo Machado's blog"
-      }),
-      file = path.join(__dirname, "output", "index.html");
-  fs.writeFileSync(file, html);
+function apply( name, obj, folder, filename ) {
 
-  //archive
-  var archiveTemplateContent = fs.readFileSync(path.join(__dirname, "skin", "archive.jade")),
-      archiveTemplate = jade.compile(archiveTemplateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true });
+  var templateContent = fs.readFileSync(path.join(__dirname, "skin", name + ".jade")),
+      template = jade.compile(templateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true }),
+      outputFolder = path.join(__dirname, "output", folder);
 
-  html = archiveTemplate({
-      latest:latest,
-      articles: articles,
-      title: "Gustavo Machado's blog archive"
-    });
-  file = path.join(__dirname, "output", "archive.html");
-  fs.writeFileSync(file, html);
 
-}();
+  var content = template(obj);
+  mkdirp(outputFolder);
+  
+  console.log('saving article to: ' + path.join(outputFolder, filename));
+  fs.writeFileSync(path.join(outputFolder, filename), content);
+}
+
+//articles
+var articles = fs.readdirSync(path.join(__dirname, "articles"))
+              .map(function(articleName){
+                var articleFolder = path.join(__dirname, "articles", articleName),
+                    metaFile    = path.join(articleFolder, "meta.json"),
+                    article     = require(metaFile);
+
+                article.name = articleName;
+                article.date = new Date(article.date);
+                article.content = compile(articleFolder);
+                article.tldr = compile(articleFolder, "tldr");
+                article.year = article.date.getFullYear(),
+                article.month = article.date.getMonth() + 1,
+                article.url = "/" + article.year + "/" + article.month + "/" + article.name + ".html";
+                return article;
+              });
+
+//get the last 5 posts
+var latest = articles.sort(function(a,b){return b.date - a.date;}).slice(0,5);
+
+//generate each article page.
+console.log("starting to generate articles");
+articles.forEach(function(a){
+  var folder = path.join(a.year.toString(), a.month.toString());
+  a.latest = latest;
+
+  console.log("generating: " + a.name);
+  apply("article", a, a.year + "/" + a.month, a.name + ".html");
+});
+console.log("done generating articles");
+console.log("------------------------");
+
+//index
+console.log("generating index.html");
+apply("index", {latest: latest}, "", "index.html");
+
+//archive
+console.log("generating archive.html");
+apply("archive", {latest:latest, articles: articles}, "", "archive.html");
+
+
+
+
+

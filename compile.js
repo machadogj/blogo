@@ -3,66 +3,33 @@ var fs = require('fs'),
     md = require("node-markdown").Markdown,
     j = require("jade");
 
-var markdown = {
-  canCompile: function ( folder ) {
-    try
-    {
-      var stat = fs.statSync(path.join(folder, 'index.markdown'));
-      return true;
-    }
-    catch (err) {
-      return false;
-    }
-  },
-  compile: function ( folder ) {
-    return md(fs.readFileSync(path.join(folder, 'index.markdown'), "utf8"));
-  }
-};
 
-var html = {
-  canCompile: function ( folder ) {
-    try
-    {
-      var stat = fs.statSync(path.join(folder, 'index.html'));
-      return true;
-    }
-    catch (err) {
-      return false;
-    }
+var compilers = {
+  'markdown': function ( file ) {
+    return md(fs.readFileSync(file, "utf8"));
   },
-  compile: function ( folder ) {
-    return fs.readFileSync(path.join(folder, 'index.html'));
-  }
-};
-
-var jade = {
-  canCompile: function ( folder ) {
-    try
-    {
-      var stat = fs.statSync(path.join(folder, 'index.jade'));
-      return true;
-    }
-    catch (err) {
-      return false;
-    }
+  'html': function ( file ) {
+    return fs.readFileSync(path.join(file));
   },
-  compile: function ( folder ) {
+  'jade': function ( file ) {
 
-    var templateContent = fs.readFileSync(path.join(folder, 'index.jade')),
+      var folder = path.join(file, '..');
+      var templateContent = fs.readFileSync(path.join(file)),
         metaContent = require(path.join(folder, 'meta.json')),
         template = j.compile(templateContent, { filename:path.join(__dirname, "skin", "layout.jade"), pretty: true });
 
-    return template(metaContent);
-  
-  }
+      return template(metaContent);
+  },
 };
 
-var compilers = [markdown, html, jade];
+module.exports = function ( folder, file ) {
 
-module.exports = function ( folder ) {
+  file = file || 'index';
+
   for (var i in compilers) {
-    if (compilers[i].canCompile(folder)) {
-      return compilers[i].compile( folder );
+    var filePath = path.join(folder, file + '.' + i);
+    if (fs.existsSync(filePath)) {
+      return compilers[i](filePath);
     }
   }
 }

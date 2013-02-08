@@ -1,0 +1,18 @@
+.blog .bthumb2 img {
+	width:80px;
+	min-width: 80px;
+}
+
+.content .entry ul li {
+	border-left: 2px solid;
+	padding-left: 10px;
+}
+
+.entry img {
+	display: block;
+}
+
+.paging a.older {
+	color: #fe781e;
+	border-color: #fe781e;
+}

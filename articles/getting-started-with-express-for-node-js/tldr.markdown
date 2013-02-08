@@ -1,0 +1,3 @@
+<div class="bthumb2"><a href="http://http://learnboost.github.com/"><img width="100" src="http://cdn.machadogj.com/uploads/2013/02/expressjs.png" alt="Express.js"></a></div>
+
+Express is an MVC framework built on top of connect that obviously runs on node.js. Express simplifies making websites by adding a series of middleware that will handle the parsing of the requests, the routing, and finally the rendering of the views. I’ll show you how to do your first express.js app which will be extremely easy and simple to do.

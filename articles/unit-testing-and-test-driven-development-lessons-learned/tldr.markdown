@@ -1,0 +1,1 @@
+I started a discussions with my colleagues at <a href="http://www.tellago.com" target="_blank">Tellago</a> about Unit Testing and Test Driven Development, and a lot of interesting things came out of that discussion. Here are my thoughts.

@@ -1,0 +1,2 @@
+##tl;dr
+The WordPress with [mochahost](http://www.mochahost.com/) combination sucks big time so I decided to build my own blog using as a base a very small node.js project for generating static content [Blogo](https://github.com/jfromaniello/blogo). My blog is in github [here](https://github.com/machadogj/blogo) and I am running it in [Heroku](http://www.heroku.com/) for free. In this post I share what it takes to build your own Blog, and how I did it.

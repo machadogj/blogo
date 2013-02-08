@@ -1,40 +1,51 @@
 extends layout
 
 block body
-  div(class="row")
-    article(class="span8")
-      each item in latest
-        header
-          h1
-            a(href="/#{item.url}")= item.title
-          div
-            address.author
-              - if (typeof item.author.url === 'string')
-                a(rel='author', href='#{item.author.url}') #{item.author.name}
-              - else
-                span  #{item.author.name}
-              - var pubdate = item.date.toMoment()
-              - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
-              - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
-              br
-              | on 
-              time(datetime=datetimeFormat, pubdate)!= humanFormat
+  .content.blog
+    .container
+      .row
+        .offset2.span8
+          .posts
+            each item in latest
 
-        div.content
-          | !{item.content}
-          hr
+              //
+                 Each posts should be enclosed inside "entry" class" 
 
-        p
-          | See the 
-          a(href="/archive.html") archive
-          |  for more posts
+              .entry
+                h2
+                  a(href='#{item.url}') #{item.title}
+                //
+                   Meta details 
+                .meta
+                  - var pubdate = item.date.toMoment()
+                  - var datetimeFormat = pubdate.format('YYYY-MM-DDTHH:mm')
+                  - var humanFormat = pubdate.format('DD.MM.YYYY HH:mm')
+                  i.icon-calendar
+                  | #{humanFormat}
 
-    div(class="span4")
-      div(class="well sidebar-nav")
-        ul(class="nav nav-list")
-          li(class="nav-header") Latest Posts
-          each item in latest
-            li
-              a(href="/#{item.url}")= item.title  
-          li
-            a(href="/archive.html") See more >>
+                  span.pull-right
+                    i.icon-comment
+                    a(href='#{item.url}#disqus_thread') Comments
+
+                //
+                   Para 
+                div !{item.tldr || item.content}
+                //
+                   Read more 
+                .button
+                  a(href='#{item.url}') Read all...
+            .paging
+              a.older(href="/archive.html") Read older posts...
+
+  script
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'machadogj'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+

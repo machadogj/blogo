@@ -1,0 +1,13 @@
+[Make use of "0-base-file.html" file if you are added any new pages]
+1. Use the class "border" to add border.
+2. Use the class "color" to add color to the text.
+3. Use the class "b-orange" or "b-green" or "b-black" or "b-blue" or "b-purple" or "b-lblue" or "b-red" to add background color.
+4. Use the class "bold" to add boldness to text.
+5. Use the class "caps" for uppercase text.
+6. Use the class "grey" for grey color text.
+7. Use the class "big" for big size font.
+8. Use the class "bor" to add big spacing.
+9. Add the class "button" to add button style for all child anchor links.
+10. Add the class "padd" to add padding.
+11. Add te class "center" to align the text to center.
+12. Use the class "orange" or "green" or "blue" or "purple" or "red" or "lblue" for colorful text.

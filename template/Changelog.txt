@@ -1,0 +1,36 @@
+**Changelog:**
+
+**Version 3.0:**
+[Note: There is no major change in older pages. Only change is, included extra CSS and JS files]
+
+ - Updated bootstrap.js to Version 2.2.2.
+ - Added 30+ new pages. 
+ - Added Twitter plugin (All html files).
+ - Added easing js plugin. (All html files).
+ - Added Flexslider. Flexslider css file and js file included in all HTML files. Image file "bg_direction_nav" added to img folder.
+ - Added two new colors (red.css, lblue.css).
+ - Support page update (support.html).
+ - Service section read more icon change.
+ - Footer widgets update (All html files).
+ - Lots of design improvements (style.css, blue.css, green.css, orange.css, purple.css)
+ - Added Colored testimonials (testimonial.html & style.css)
+ - IE Top Border fix. (blue.css, green.css, orange.css, purple.css)
+
+**Version 2.2:**
+
+ - Bootstrap updated to Version 2.2.2.
+
+**Version 2.0:**
+
+ - Font awesome icon updated to Version 3.0
+ - Icon fix in Service blocks (style.css).
+ - New Pages added - 404, About us, Blog, Features, Resume, Contact, Service, Testimonials (style.css, blue.css, green.css, purple.css, orange.css)
+
+**Version 1.2:**
+
+ - Navigation bar hover bug fixed.
+ - Button updated.
+
+**Version 1.0:**
+
+ - Initial Release.

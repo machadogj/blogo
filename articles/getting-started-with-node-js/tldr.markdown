@@ -1,0 +1,3 @@
+##What is node.js?
+<div class="bthumb2"><a href="http://http://learnboost.github.com/"><img width="100" src="http://nodejs.org/images/logos/nodejs-dark.png" alt="node.js"></a></div>
+node.js is a development platform based on Javascript created by Ryan Dahl and currently maintained by the cloud provider [Joyent](http://www.joyent.com/). The interesting thing about node.js is that it runs in a single thread, and attacks concurrency by trying to block the CPU as little as possible (if at all).
