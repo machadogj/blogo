@@ -1,0 +1,3 @@
+<div class="bthumb2"><a href=""><img width="100" src="http://cdn.machadogj.com/uploads/2013/04/errors.png" alt="errors"></a></div>
+
+It is always a good idea to take good care of the errors and having a clear and efficient strategy for handling them. Node.js is not the exception to this rule, and provides multiple different techniques for handling errors in all the different scenarios...
