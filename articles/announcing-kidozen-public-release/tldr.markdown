@@ -1,0 +1,3 @@
+<div class="bthumb2"><a href=""><img width="100" src="http://cdn.machadogj.com/uploads/2013/05/logo.png" alt="KidoZen"></a></div>
+
+On the 2nd of May we announced the public release of our new product [KidoZen](http://kidozen.com), an Enterprise Ready Mobile Backend as a Service. We have built this product base on the premise that bringing mobility into your Enterprise, is not a matter of adapting your existing apps to a mobile interface, but rather to provide real mobile experiences that make sense to your employees.
